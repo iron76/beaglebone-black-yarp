@@ -87,26 +87,16 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
     noiseLevel = config.check("noise",Value(0.05),
                               "pixel noise level").asDouble();
     
-    xScale = config.check("sx",Value(1.0),
-                          "scaling for x coordinate").asDouble();
-    yScale = config.check("sy",Value(1.0),
-                          "scaling for y coordinate").asDouble();
-    
-    lifetime = config.check("lifetime",Value(-1.0),
-                            "device should exist for this length of time (in seconds)").asDouble();
-    if (lifetime>=0) {
-        start();
-    }
     return true;
 }
 
 
 // IFrameGrabberImage
 bool AthleteBot::getImage(yarp::sig::ImageOf<yarp::sig::PixelRgb>& image) {
-    pos[0] += vel[0];
-    pos[1] += vel[1];
-    double xx = pos[0];
-    double yy = pos[1];
+    m_referencePositions[0] += m_referenceVelocities[0];
+    m_referencePositions[1] += m_referenceVelocities[1];
+    double xx = m_referencePositions[0];
+    double yy = m_referencePositions[1];
     double dx = (xx-m_dx)*5;
     double dy = (yy-m_dy)*5;
     m_tx += m_tdx;
@@ -119,19 +109,17 @@ bool AthleteBot::getImage(yarp::sig::ImageOf<yarp::sig::PixelRgb>& image) {
     }
     dx /= 40;
     dy /= 40;
-    if (amp[0]>0.5) {
-        m_dx += dx;
-    }
-    if (amp[1]>0.5) {
-        m_dy += dy;
-    }
+
+    m_dx += dx;
+    m_dy += dy;
+    
     image.resize(m_w,m_h);
     back.safePixel(-1,-1) = PixelRgb(255,0,0);
-    loc[0] = m_dx;
-    loc[1] = m_dy;
+    m_positions[0] = m_dx;
+    m_positions[1] = m_dy;
     
-    double m_dx_scaled = m_dx*xScale;
-    double m_dy_scaled = m_dy*yScale;
+    double m_dx_scaled = m_dx;
+    double m_dy_scaled = m_dy;
     IMGFOR(image,x,y) {
         int x0 = int(x+m_x+m_dx_scaled*0.5+0.5);
         int y0 = int(y+m_y+m_dy_scaled*0.5+0.5);
@@ -155,10 +143,5 @@ bool AthleteBot::getImage(yarp::sig::ImageOf<yarp::sig::PixelRgb>& image) {
     return true;
 }
 
-void AthleteBot::run() {
-    if (lifetime>=0) {
-        Time::delay(lifetime);
-        yarp::os::exit(0);
-    }
-}
+void AthleteBot::run() { }
 

@@ -35,41 +35,34 @@ public DeviceResponder,
 public yarp::os::Thread
 {
 private:
-    int njoints;
+    int m_njoints;
     double m_x, m_y;
     double m_dx, m_dy;
     double m_tx, m_ty;
     double m_tdx, m_tdy;
     int m_w, m_h;
-    double xScale, yScale;
     double noiseLevel;
-    yarp::sig::Vector pos, vel, speed, acc, loc, amp;
+    yarp::sig::Vector m_referencePositions, m_referenceVelocities, m_trajectoryGenerationReferenceSpeed, m_trajectoryGenerationReferenceAcc, m_positions;
     yarp::sig::ImageOf<yarp::sig::PixelRgb> back, fore;
-    double lifetime;
     
     void init();
 public:
     AthleteBot() {
-        njoints = 2;
+        m_njoints = 2;
         m_w = 128;
         m_h = 128;
-        pos.size(njoints);
-        vel.size(njoints);
-        speed.size(njoints);
-        acc.size(njoints);
-        loc.size(njoints);
-        amp.size(njoints);
-        xScale = 1;
-        yScale = 1;
-        for (int i=0; i<njoints; i++) {
-            pos[i] = 0;
-            vel[i] = 0;
-            speed[i] = 0;
-            acc[i] = 0;
-            loc[i] = 0;
-            amp[i] = 1; // initially on - ok for simulator
+        m_referencePositions.size(m_njoints);                 /* desired reference positions */
+        m_referenceVelocities.size(m_njoints);                /* desired reference speeds */
+        m_trajectoryGenerationReferenceSpeed.size(m_njoints); /* desired speed for trj generation */
+        m_trajectoryGenerationReferenceAcc.size(m_njoints);   /* desired acc for vel generation */
+        m_positions.size(m_njoints);
+        for (int i=0; i<m_njoints; i++) {
+            m_referencePositions[i] = 0;
+            m_referenceVelocities[i] = 0;
+            m_trajectoryGenerationReferenceSpeed[i] = 0;
+            m_trajectoryGenerationReferenceAcc[i] = 0;
+            m_positions[i] = 0;
         }
-        lifetime = -1;
         init();
     }
     
@@ -91,7 +84,7 @@ public:
     // IPositionControl etc.
     
     virtual bool getAxes(int *ax) {
-        *ax = njoints;
+        *ax = m_njoints;
         return true;
     }
     
@@ -100,16 +93,16 @@ public:
     }
     
     virtual bool positionMove(int j, double ref) {
-        if (j<njoints) {
-            pos[j] = ref;
+        if (j<m_njoints) {
+            m_referencePositions[j] = ref;
         }
         return true;
     }
     
     
     virtual bool positionMove(const double *refs) {
-        for (int i=0; i<njoints; i++) {
-            pos[i] = refs[i];
+        for (int i=0; i<m_njoints; i++) {
+            m_referencePositions[i] = refs[i];
         }
         return true;
     }
@@ -136,64 +129,64 @@ public:
     
     
     virtual bool setRefSpeed(int j, double sp) {
-        if (j<njoints) {
-            speed[j] = sp;
+        if (j<m_njoints) {
+            m_trajectoryGenerationReferenceSpeed[j] = sp;
         }
         return true;
     }
     
     
     virtual bool setRefSpeeds(const double *spds) {
-        for (int i=0; i<njoints; i++) {
-            speed[i] = spds[i];
+        for (int i=0; i<m_njoints; i++) {
+            m_trajectoryGenerationReferenceSpeed[i] = spds[i];
         }
         return true;
     }
     
     
     virtual bool setRefAcceleration(int j, double acc) {
-        if (j<njoints) {
-            this->acc[j] = acc;
+        if (j<m_njoints) {
+            this->m_trajectoryGenerationReferenceAcc[j] = acc;
         }
         return true;
     }
     
     
     virtual bool setRefAccelerations(const double *accs) {
-        for (int i=0; i<njoints; i++) {
-            acc[i] = accs[i];
+        for (int i=0; i<m_njoints; i++) {
+            m_trajectoryGenerationReferenceAcc[i] = accs[i];
         }
         return true;
     }
     
     
     virtual bool getRefSpeed(int j, double *ref) {
-        if (j<njoints) {
-            (*ref) = speed[j];
+        if (j<m_njoints) {
+            (*ref) = m_trajectoryGenerationReferenceSpeed[j];
         }
         return true;
     }
     
     
     virtual bool getRefSpeeds(double *spds) {
-        for (int i=0; i<njoints; i++) {
-            spds[i] = speed[i];
+        for (int i=0; i<m_njoints; i++) {
+            spds[i] = m_trajectoryGenerationReferenceSpeed[i];
         }
         return true;
     }
     
     
     virtual bool getRefAcceleration(int j, double *acc) {
-        if (j<njoints) {
-            (*acc) = this->acc[j];
+        if (j<m_njoints) {
+            (*acc) = this->m_trajectoryGenerationReferenceAcc[j];
         }
         return true;
     }
     
     
     virtual bool getRefAccelerations(double *accs) {
-        for (int i=0; i<njoints; i++) {
-            accs[i] = acc[i];
+        for (int i=0; i<m_njoints; i++) {
+            accs[i] = m_trajectoryGenerationReferenceAcc[i];
         }
         return true;
     }
@@ -218,64 +211,64 @@ public:
     }
     
     virtual bool resetEncoders() {
-        for (int i=0; i<njoints; i++) {
-            pos[i] = 0;
+        for (int i=0; i<m_njoints; i++) {
+            m_referencePositions[i] = 0;
         }
         return true;
     }
     
     virtual bool setEncoder(int j, double val) {
-        if (j<njoints) {
-            pos[j] = val;
+        if (j<m_njoints) {
+            m_referencePositions[j] = val;
         }
         return true;
     }
     
     virtual bool setEncoders(const double *vals) {
-        for (int i=0; i<njoints; i++) {
-            pos[i] = vals[i];
+        for (int i=0; i<m_njoints; i++) {
+            m_referencePositions[i] = vals[i];
         }
         return true;
     }
     
     virtual bool getEncoder(int j, double *v) {
-        if (j<njoints) {
-            (*v) = loc[j];
+        if (j<m_njoints) {
+            (*v) = m_positions[j];
         }
         
         return true;
     }
     
     virtual bool getEncoders(double *encs) {
-        for (int i=0; i<njoints; i++) {
-            encs[i] = loc[i];
+        for (int i=0; i<m_njoints; i++) {
+            encs[i] = m_positions[i];
         }
         return true;
     }
     
     virtual bool getEncoderSpeed(int j, double *sp) {
-        if (j<njoints) {
+        if (j<m_njoints) {
             (*sp) = 0;
         }
         return true;
     }
     
     virtual bool getEncoderSpeeds(double *spds) {
-        for (int i=0; i<njoints; i++) {
+        for (int i=0; i<m_njoints; i++) {
             spds[i] = 0;
         }
         return true;
     }
     
     virtual bool getEncoderAcceleration(int j, double *spds) {
-        if (j<njoints) {
+        if (j<m_njoints) {
             (*spds) = 0;
         }
         return true;
     }
     
     virtual bool getEncoderAccelerations(double *accs) {
-        for (int i=0; i<njoints; i++) {
+        for (int i=0; i<m_njoints; i++) {
             accs[i] = 0;
         }
         return true;
@@ -288,7 +281,7 @@ public:
         bool ret = getEncoders(encs);
         double myTime = yarp::os::Time::now();
         
-        for (int i=0; i<njoints; i++)
+        for (int i=0; i<m_njoints; i++)
         {
             time[i] = myTime;
         }
@@ -308,15 +301,15 @@ public:
     }
     
     virtual bool velocityMove(int j, double sp) {
-        if (j<njoints) {
-            vel[j] = sp;
+        if (j<m_njoints) {
+            m_referenceVelocities[j] = sp;
         }
         return true;
     }
     
     virtual bool velocityMove(const double *sp) {
-        for (int i=0; i<njoints; i++) {
-            vel[i] = sp[i];
+        for (int i=0; i<m_njoints; i++) {
+            m_referenceVelocities[i] = sp[i];
         }
         return true;
     }
@@ -324,30 +317,18 @@ public:
     
     
     virtual bool enableAmp(int j) {
-        if (j<njoints) {
-            amp[j] = 1;
-        }
         return true;
     }
     
     virtual bool disableAmp(int j) {
-        if (j<njoints) {
-            amp[j] = 0;
-        }
         return true;
     }
     
     virtual bool getCurrent(int j, double *val) {
-        if (j<njoints) {
-            val[j] = amp[j];
-        }
         return true;
     }
     
     virtual bool getCurrents(double *vals) {
-        for (int i=0; i<njoints; i++) {
-            vals[i] = amp[i];
-        }
         return true;
     }
     
@@ -414,7 +395,7 @@ public:
     
     virtual bool getInteractionModes(yarp::dev::InteractionModeEnum* modes)
     {
-        for (int i=0; i<njoints; i++) {
+        for (int i=0; i<m_njoints; i++) {
             modes[i] = (yarp::dev::InteractionModeEnum) VOCAB_IM_STIFF;
         }
         return true;
@@ -473,7 +454,7 @@ public:
     
     virtual bool getControlModes(int *modes)
     {
-        for (int i=0; i<njoints; i++) {
+        for (int i=0; i<m_njoints; i++) {
             modes[i] = (yarp::dev::InteractionModeEnum) VOCAB_CM_POSITION;
         }
         return true;
