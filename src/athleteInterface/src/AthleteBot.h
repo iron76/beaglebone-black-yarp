@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) 2007 RobotCub Consortium
- * Authors: Paul Fitzpatrick
+ * Authors: Paul Fitzpatrick and Francesco Nori
  * CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
  *
  */
