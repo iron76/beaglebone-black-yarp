@@ -7,13 +7,17 @@
  *
  */
 
+// YARP dependencies
 #include <yarp/dev/DeviceDriver.h>
-
 #include <yarp/dev/ControlBoardInterfaces.h>
 #include <yarp/dev/FrameGrabberInterfaces.h>
 #include <yarp/sig/Vector.h>
 #include <yarp/sig/Image.h>
 #include <yarp/os/Time.h>
+
+// BeagleBone black GPIO access
+#include <BeagleBoneInputOutput.h>
+
 
 namespace yarp {
     namespace dev {
@@ -36,19 +40,22 @@ public yarp::os::Thread
 {
 private:
     int m_njoints;
-    double m_x, m_y;
-    double m_dx, m_dy;
-    double m_tx, m_ty;
-    double m_tdx, m_tdy;
+    // double m_x, m_y;
+    // double m_dx, m_dy;
+    // double m_tx, m_ty;
+    // double m_tdx, m_tdy;
+    
     int m_w, m_h;
     double noiseLevel;
     yarp::sig::Vector m_referencePositions, m_referenceVelocities, m_trajectoryGenerationReferenceSpeed, m_trajectoryGenerationReferenceAcc, m_positions;
     yarp::sig::ImageOf<yarp::sig::PixelRgb> back, fore;
+    bbio m_bbio;
     
     void init();
 public:
     AthleteBot() {
-        m_njoints = 2;
+        m_bbio.init();
+        m_bbio.getAxes(&m_njoints);
         m_w = 128;
         m_h = 128;
         m_referencePositions.size(m_njoints);                 /* desired reference positions */
@@ -232,17 +239,12 @@ public:
     }
     
     virtual bool getEncoder(int j, double *v) {
-        if (j<m_njoints) {
-            (*v) = m_positions[j];
-        }
-        
+        m_bbio.getEncoder(j, v);
         return true;
     }
     
-    virtual bool getEncoders(double *encs) {
-        for (int i=0; i<m_njoints; i++) {
-            encs[i] = m_positions[i];
-        }
+    virtual bool getEncoders(double *v) {
+        m_bbio.getEncoders(v);
         return true;
     }
     
