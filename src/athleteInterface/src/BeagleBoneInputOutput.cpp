@@ -104,12 +104,14 @@ void bbio::getAxes(int *ax) {
 }
 
 void bbio::getEncoder(int j, double *v){
+    SPI_read();
     if (j < NUM_ADC_PORT) {
         (*v) = SPI_sensor_value[0][j];
     }
 }
 
 void bbio::getEncoders(double *v) {
+    SPI_read();
     for (int i=0; i<NUM_ADC_PORT; i++) {
         v[i] = SPI_sensor_value[0][i];
     }
