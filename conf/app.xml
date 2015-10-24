@@ -1,0 +1,14 @@
+<application> 
+         <name>AthleteRobotInterface</name> //this can be anything, just a symbolic name 
+	
+	 <module> 
+		<name>sudo ./build/run_athletebot --from athletebot.ini</name> 
+		<node>/bbb</node> 
+		<workdir>/home/iron/Code/beaglebone-black-yarp/src/athleteInterface</workdir> 
+	</module> 
+	
+	<connection> 
+		<from>/cam/right</from> 
+		<to>/view/right</to> 
+	</connection> 	
+</application>
