@@ -1,11 +1,19 @@
 <application> 
-         <name>AthleteRobotInterface</name> //this can be anything, just a symbolic name 
+	<name>AthleteRobotInterface</name> //this can be anything, just a symbolic name 
 	
-	 <module> 
-		<name>sudo ./build/run_athletebot --from athletebot.ini</name> 
+	<module> 
+		<name>run_athletebot</name>
+		<parameters>--from athletebot.ini</parameters>
 		<node>/bbb</node> 
 		<workdir>/home/iron/Code/beaglebone-black-yarp/src/athleteInterface</workdir> 
 	</module> 
+
+	<module> 
+		<name>yarpscope</name>
+		<parameters>--remote /athletebot/torso/state:o</parameters>
+		<node>/iron</node> 
+	</module> 
+
 	
 	<connection> 
 		<from>/cam/right</from> 
