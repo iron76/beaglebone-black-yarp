@@ -44,7 +44,6 @@ SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 # which point to directories outside the build tree to the install RPATH
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-
 # the RPATH to be used when installing, but only if it's not a system directory
 LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
 IF("${isSystemDir}" STREQUAL "-1")
@@ -55,10 +54,7 @@ ENDIF("${isSystemDir}" STREQUAL "-1")
 IF (folder_source)
   ADD_EXECUTABLE(run_athletebot ${folder_source} ${folder_header})
   TARGET_LINK_LIBRARIES(run_athletebot ${YARP_LIBRARIES} ${BBIO_LIBRARY})
-  # INSTALL(TARGETS run_athletebot DESTINATION bin/ PERMISSIONS OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_WRITE WORLD_EXECUTE SETUID SETGID)
   INSTALL(TARGETS run_athletebot DESTINATION bin/ PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE SETGID)
-  # execute_process(COMMAND /bin/chown root "${CMAKE_INSTALL_PREFIX}/bin/run_athletebot")
-  # install(CODE "execute_process(COMMAND /bin/chown root "${CMAKE_INSTALL_PREFIX}/bin/run_athletebot") ")
   install(CODE "execute_process(COMMAND /bin/chown root ${CMAKE_INSTALL_PREFIX}/bin/run_athletebot)")
   install(CODE "execute_process(COMMAND /bin/chmod 4755 ${CMAKE_INSTALL_PREFIX}/bin/run_athletebot)")
 ELSE (folder_source)
