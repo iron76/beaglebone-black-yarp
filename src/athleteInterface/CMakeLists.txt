@@ -24,8 +24,8 @@ SET(ENABLE_athletebot TRUE CACHE BOOLEAN "we want to use athletebot")
 file( GLOB ATH_SOURCES src/*.cpp )
 file( GLOB ATH_HEADERS include/*.h )
 
-SET(folder_source ${ATH_SOURCES} adder.cpp add_athletebot.cpp yarpdev.cpp)
-SET(folder_header ${ATH_HEADERS} adder.h)
+SET(folder_source ${ATH_SOURCES} )
+SET(folder_header ${ATH_HEADERS} )
 SOURCE_GROUP("Source Files" FILES ${folder_source})
 SOURCE_GROUP("Header Files" FILES ${folder_header})
 
