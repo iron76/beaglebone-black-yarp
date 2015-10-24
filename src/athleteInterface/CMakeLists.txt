@@ -34,7 +34,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 # Set up our main executable.
 IF (folder_source)
   ADD_EXECUTABLE(run_athletebot ${folder_source} ${folder_header})
-  TARGET_LINK_LIBRARIES(run_athletebot ${YARP_LIBRARIES} )
+  TARGET_LINK_LIBRARIES(run_athletebot ${YARP_LIBRARIES} ${BBIO_LIBRARY})
   INSTALL_TARGETS(/bin run_athletebot)
 ELSE (folder_source)
   MESSAGE(FATAL_ERROR "No source code files found. Please add something")
