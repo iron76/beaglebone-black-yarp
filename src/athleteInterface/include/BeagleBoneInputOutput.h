@@ -8,12 +8,16 @@
  */
 
 #include <BBBiolib.h>
+#include <gpio.h>
+
 
 class bbio {
 public:
-    void init();
+    void open();
     void close();
     void getAxes(int *);
     void getEncoder  (int, double *);
     void getEncoders (double *);
+    void setRefOutput(int, double);
+    void setRefOutputs(const double *v);
 };
