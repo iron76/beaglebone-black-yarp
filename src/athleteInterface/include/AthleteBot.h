@@ -32,6 +32,7 @@ public IAmplifierControl,
 public IEncodersTimed,
 public IFrameGrabberImage,
 public IControlCalibration2,
+public IOpenLoopControl,
 public IControlLimits,
 public IInteractionMode,
 public IControlMode,
@@ -54,7 +55,7 @@ private:
     void init();
 public:
     AthleteBot() {
-        m_bbio.init();
+        m_bbio.open();
         m_bbio.getAxes(&m_njoints);
         m_w = 128;
         m_h = 128;
@@ -316,8 +317,6 @@ public:
         return true;
     }
     
-    
-    
     virtual bool enableAmp(int j) {
         return true;
     }
@@ -461,6 +460,49 @@ public:
         }
         return true;
     }
+    
+    //Open loop control
+    virtual bool setRefOutput(int j, double v)
+    {
+        m_bbio.setRefOutput(j, v);
+        return true;
+    }
+    
+    virtual bool setRefOutputs(const double *v)
+    {
+        m_bbio.setRefOutputs(v);
+        return true;
+    }
+    
+    virtual bool getRefOutput(int j, double *v)
+    {
+        fprintf(stderr, "getRefOutput is not implmented! \n");
+        return true;
+    }
+    
+    virtual bool getRefOutputs(double *v)
+    {
+        fprintf(stderr, "getRefOutputs is not implmented! \n");
+        return true;
+    }
+    
+    virtual bool getOutput(int j, double *v)
+    {
+        fprintf(stderr, "getOutput is not implmented! \n");
+        return true;
+    }
+    
+    virtual bool getOutputs(double *v)
+    {
+        fprintf(stderr, "getOutputs is not implmented! \n");
+        return true;
+    }
+    
+    virtual bool setOpenLoopMode()
+    {
+        return true;
+    }
+    
     
     virtual void run();
 };
