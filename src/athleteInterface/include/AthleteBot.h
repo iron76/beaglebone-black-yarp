@@ -94,7 +94,6 @@ public:
     
     
     // IPositionControl etc.
-    
     virtual bool getAxes(int *ax) {
         *ax = m_njoints;
         return true;
@@ -105,6 +104,9 @@ public:
     }
     
     virtual bool positionMove(int j, double ref) {
+#ifdef _ENABLE_DEBUG_
+        fprintf(stderr, "Calling positionMove! \n");
+#endif
         if (j<m_njoints) {
             m_referencePositions[j] = ref;
         }
@@ -113,6 +115,9 @@ public:
     
     
     virtual bool positionMove(const double *refs) {
+#ifdef _ENABLE_DEBUG_
+        fprintf(stderr, "Calling positionMoves! \n");
+#endif
         for (int i=0; i<m_njoints; i++) {
             m_referencePositions[i] = refs[i];
         }
@@ -141,6 +146,9 @@ public:
     
     
     virtual bool setRefSpeed(int j, double sp) {
+#ifdef _ENABLE_DEBUG_
+        fprintf(stderr, "Calling setRefSpeed! \n");
+#endif
         if (j<m_njoints) {
             m_trajectoryGenerationReferenceSpeed[j] = sp;
         }
@@ -149,6 +157,9 @@ public:
     
     
     virtual bool setRefSpeeds(const double *spds) {
+#ifdef _ENABLE_DEBUG_
+        fprintf(stderr, "Calling setRefSpeeds! \n");
+#endif
         for (int i=0; i<m_njoints; i++) {
             m_trajectoryGenerationReferenceSpeed[i] = spds[i];
         }
@@ -229,6 +240,7 @@ public:
         return true;
     }
     
+    //IEncoders
     virtual bool setEncoder(int j, double val) {
         if (j<m_njoints) {
             m_referencePositions[j] = val;
@@ -302,12 +314,15 @@ public:
         return ret;
     }
     
-    
+    //IVelocityControl
     virtual bool setVelocityMode() {
         return true;
     }
     
     virtual bool velocityMove(int j, double sp) {
+#ifdef _ENABLE_DEBUG_
+        fprintf(stderr, "Calling velocityMove! \n");
+#endif
         if (j<m_njoints) {
             m_referenceVelocities[j] = sp;
         }
@@ -315,12 +330,16 @@ public:
     }
     
     virtual bool velocityMove(const double *sp) {
+#ifdef _ENABLE_DEBUG_
+        fprintf(stderr, "Calling velocityMoves! \n");
+#endif
         for (int i=0; i<m_njoints; i++) {
             m_referenceVelocities[i] = sp[i];
         }
         return true;
     }
     
+    //IAmplifierControl
     virtual bool enableAmp(int j) {
         return true;
     }
@@ -357,6 +376,7 @@ public:
         return true;
     }
     
+    //IControlCalibration2
     virtual bool calibrate2(int j, unsigned int iv, double v1, double v2, double v3)
     {
         fprintf(stderr, "AthleteBot: calibrating joint %d with parameters %u %lf %lf %lf\n", j, iv, v1, v2, v3);
@@ -423,52 +443,70 @@ public:
     //IControlMode
     virtual bool setPositionMode(int j)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Setting position mode \n");
+#endif
         m_controlMode(j) = VOCAB_CM_POSITION;
         return true;
     }
     
     virtual bool setVelocityMode(int j)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Setting velocity mode \n");
+#endif
         m_controlMode(j) = VOCAB_CM_VELOCITY;
         return true;
     }
     
     virtual bool setTorqueMode(int j)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Setting torque mode \n");
+#endif
         m_controlMode(j) = VOCAB_CM_TORQUE;
         return true;
     }
     
     virtual bool setImpedancePositionMode(int j)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "impedancePos not configured\n");
+#endif
         return true;
     }
     
     virtual bool setImpedanceVelocityMode(int j)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "impedanceVel not configured\n");
+#endif
         return true;
     }
     
     virtual bool setOpenLoopMode(int j)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Setting opneloop mode \n");
+#endif
         m_controlMode(j) = VOCAB_CM_OPENLOOP;
         return true;
     }
     
     virtual bool getControlMode(int j, int *mode)
     {
+#ifdef _ENABLE_DEBUG_
+        fprintf(stderr, "Calling getControlMode mode \n");
+#endif
         *mode = m_controlMode(j);
         return true;
     }
     
     virtual bool getControlModes(int *modes)
     {
+#ifdef _ENABLE_DEBUG_
+        fprintf(stderr, "Calling getControlModes mode \n");
+#endif
         for (int i=0; i<m_njoints; i++) {
             modes[i] = m_controlMode(i);
         }
