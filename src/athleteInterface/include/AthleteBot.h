@@ -49,6 +49,7 @@ private:
     int m_w, m_h;
     double noiseLevel;
     yarp::sig::Vector m_referencePositions, m_referenceVelocities, m_trajectoryGenerationReferenceSpeed, m_trajectoryGenerationReferenceAcc, m_positions;
+    yarp::sig::VectorOf<int> m_controlMode;
     yarp::sig::ImageOf<yarp::sig::PixelRgb> back, fore;
     bbio m_bbio;
     
@@ -64,12 +65,14 @@ public:
         m_trajectoryGenerationReferenceSpeed.size(m_njoints); /* desired speed for trj generation */
         m_trajectoryGenerationReferenceAcc.size(m_njoints);   /* desired acc for vel generation */
         m_positions.size(m_njoints);
+        m_controlMode(m_njoints);
         for (int i=0; i<m_njoints; i++) {
             m_referencePositions[i] = 0;
             m_referenceVelocities[i] = 0;
             m_trajectoryGenerationReferenceSpeed[i] = 0;
             m_trajectoryGenerationReferenceAcc[i] = 0;
             m_positions[i] = 0;
+            m_controlMode[i] = (int) VOCAB_POSITION;
         }
         init();
     }
@@ -419,44 +422,54 @@ public:
     //IControlMode
     virtual bool setPositionMode(int j)
     {
+        fprintf(stderr, "Setting position mode \n");
+        m_controlMode(j) = VOCAB_CM_POSITION;
         return true;
     }
     
     virtual bool setVelocityMode(int j)
     {
+        fprintf(stderr, "Setting velocity mode \n");
+        m_controlMode(j) = VOCAB_CM_VELOCITY;
         return true;
     }
     
     virtual bool setTorqueMode(int j)
     {
+        fprintf(stderr, "Setting torque mode \n");
+        m_controlMode(j) = VOCAB_CM_TORQUE;
         return true;
     }
     
     virtual bool setImpedancePositionMode(int j)
     {
+        fprintf(stderr, "impedancePos not configured\n");
         return true;
     }
     
     virtual bool setImpedanceVelocityMode(int j)
     {
+        fprintf(stderr, "impedanceVel not configured\n");
         return true;
     }
     
     virtual bool setOpenLoopMode(int j)
     {
+        fprintf(stderr, "Setting opneloop mode \n");
+        m_controlMode(j) = VOCAB_CM_OPENLOOP;
         return true;
     }
     
     virtual bool getControlMode(int j, int *mode)
     {
-        *mode = (yarp::dev::InteractionModeEnum) VOCAB_CM_POSITION;
+        *mode = m_controlMode(j);
         return true;
     }
     
     virtual bool getControlModes(int *modes)
     {
         for (int i=0; i<m_njoints; i++) {
-            modes[i] = (yarp::dev::InteractionModeEnum) VOCAB_CM_POSITION;
+            modes[i] = m_controlMode(i);
         }
         return true;
     }
