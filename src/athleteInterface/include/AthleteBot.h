@@ -56,7 +56,9 @@ private:
     void init();
 public:
     AthleteBot() {
+#ifndef _DISABLE_IO_
         m_bbio.open();
+#endif
         m_bbio.getAxes(&m_njoints);
         m_w = 128;
         m_h = 128;
@@ -256,7 +258,9 @@ public:
     }
     
     virtual bool getEncoder(int j, double *v) {
+#ifndef _DISABLE_IO_
         m_bbio.getEncoder(j, v);
+#endif
         return true;
     }
     
@@ -519,7 +523,9 @@ public:
 #ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Calling setRefOutput! \n");
 #endif
+#ifndef _DISABLE_IO_
         m_bbio.setRefOutput(j, v);
+#endif
         m_referenceOuputs(j) = v;
         return true;
     }
@@ -529,7 +535,9 @@ public:
 #ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Calling setRefOutputs! \n");
 #endif
+#ifndef _DISABLE_IO_
         m_bbio.setRefOutputs(v);
+#endif
         for (int i=0; i<m_njoints; i++) {
             m_referenceOuputs(i) = v[i];
         }

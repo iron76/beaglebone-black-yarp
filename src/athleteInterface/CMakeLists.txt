@@ -16,6 +16,11 @@ if (ENABLE_DEBUG)
 add_definitions(-D_ENABLE_DEBUG_)
 endif()
 
+# Define the control options
+option(DISABLE_IO boolean)
+if (DISABLE_IO)
+add_definitions(-D_DISABLE_IO_)
+endif()
 
 # find YARP
 FIND_PACKAGE(YARP REQUIRED)
