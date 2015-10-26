@@ -48,7 +48,7 @@ private:
     
     int m_w, m_h;
     double noiseLevel;
-    yarp::sig::Vector m_referencePositions, m_referenceVelocities, m_trajectoryGenerationReferenceSpeed, m_trajectoryGenerationReferenceAcc, m_positions;
+    yarp::sig::Vector m_referencePositions, m_referenceVelocities, m_trajectoryGenerationReferenceSpeed, m_trajectoryGenerationReferenceAcc, m_positions, m_referenceOuputs;
     yarp::sig::VectorOf<int> m_controlMode;
     yarp::sig::ImageOf<yarp::sig::PixelRgb> back, fore;
     bbio m_bbio;
@@ -65,6 +65,7 @@ public:
         m_trajectoryGenerationReferenceSpeed.size(m_njoints); /* desired speed for trj generation */
         m_trajectoryGenerationReferenceAcc.size(m_njoints);   /* desired acc for vel generation */
         m_positions.size(m_njoints);
+        m_referenceOuputs.size(m_njoints);
         m_controlMode.resize(m_njoints,(int) VOCAB_POSITION);
         for (int i=0; i<m_njoints; i++) {
             m_referencePositions[i] = 0;
@@ -72,6 +73,7 @@ public:
             m_trajectoryGenerationReferenceSpeed[i] = 0;
             m_trajectoryGenerationReferenceAcc[i] = 0;
             m_positions[i] = 0;
+            m_referenceOuputs[i] = 0;
         }
         init();
     }
@@ -477,24 +479,30 @@ public:
     virtual bool setRefOutput(int j, double v)
     {
         m_bbio.setRefOutput(j, v);
+        m_referenceOuputs(j) = v;
         return true;
     }
     
     virtual bool setRefOutputs(const double *v)
     {
         m_bbio.setRefOutputs(v);
+        for (int i=0; i<m_njoints; i++) {
+            m_referenceOuputs(i) = v[i];
+        }
         return true;
     }
     
     virtual bool getRefOutput(int j, double *v)
     {
-        fprintf(stderr, "getRefOutput is not implmented! \n");
+        *v = m_referenceOuputs(j);
         return true;
     }
     
     virtual bool getRefOutputs(double *v)
     {
-        fprintf(stderr, "getRefOutputs is not implmented! \n");
+        for (int i=0; i<m_njoints; i++) {
+            v[i] = m_referenceOuputs(i);
+        }
         return true;
     }
     
