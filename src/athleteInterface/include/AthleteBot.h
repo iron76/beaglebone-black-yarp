@@ -478,6 +478,7 @@ public:
     //Open loop control
     virtual bool setRefOutput(int j, double v)
     {
+        fprintf(stderr, "Calling setRefOutput! \n");
         m_bbio.setRefOutput(j, v);
         m_referenceOuputs(j) = v;
         return true;
@@ -485,6 +486,7 @@ public:
     
     virtual bool setRefOutputs(const double *v)
     {
+        fprintf(stderr, "Calling setRefOutputs! \n");
         m_bbio.setRefOutputs(v);
         for (int i=0; i<m_njoints; i++) {
             m_referenceOuputs(i) = v[i];
@@ -494,12 +496,14 @@ public:
     
     virtual bool getRefOutput(int j, double *v)
     {
+        fprintf(stderr, "Calling getRefOutput! \n");
         *v = m_referenceOuputs(j);
         return true;
     }
     
     virtual bool getRefOutputs(double *v)
     {
+        fprintf(stderr, "Calling getRefOutputs! \n");
         for (int i=0; i<m_njoints; i++) {
             v[i] = m_referenceOuputs(i);
         }
