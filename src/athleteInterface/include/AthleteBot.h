@@ -382,7 +382,7 @@ public:
         fprintf(stderr, "AthleteBot: set limits\n");
         return true;
     }
-
+    
     //IInteractionMode
     virtual bool getInteractionMode(int axis, yarp::dev::InteractionModeEnum* mode)
     {
@@ -478,7 +478,9 @@ public:
     //Open loop control
     virtual bool setRefOutput(int j, double v)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Calling setRefOutput! \n");
+#endif
         m_bbio.setRefOutput(j, v);
         m_referenceOuputs(j) = v;
         return true;
@@ -486,7 +488,9 @@ public:
     
     virtual bool setRefOutputs(const double *v)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Calling setRefOutputs! \n");
+#endif
         m_bbio.setRefOutputs(v);
         for (int i=0; i<m_njoints; i++) {
             m_referenceOuputs(i) = v[i];
@@ -496,14 +500,18 @@ public:
     
     virtual bool getRefOutput(int j, double *v)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Calling getRefOutput! \n");
+#endif
         *v = m_referenceOuputs(j);
         return true;
     }
     
     virtual bool getRefOutputs(double *v)
     {
+#ifdef _ENABLE_DEBUG_
         fprintf(stderr, "Calling getRefOutputs! \n");
+#endif
         for (int i=0; i<m_njoints; i++) {
             v[i] = m_referenceOuputs(i);
         }

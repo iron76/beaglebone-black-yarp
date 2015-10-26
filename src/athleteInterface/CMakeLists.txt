@@ -10,6 +10,13 @@ cmake_minimum_required(VERSION 2.8.9)
 # Start a project.
 PROJECT(run_athletebot)
 
+# Define the debug options
+option(ENABLE_DEBUG boolean)
+if (ENABLE_DEBUG)
+add_definitions(-D_ENABLE_DEBUG_)
+endif()
+
+
 # find YARP
 FIND_PACKAGE(YARP REQUIRED)
 FIND_PACKAGE(YARP REQUIRED)
