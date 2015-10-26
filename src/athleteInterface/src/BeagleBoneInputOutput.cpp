@@ -229,7 +229,10 @@ void bbio::setRefOutput(int j, double v)
     double pressure_coeff = v/100.0;
     if(pressure_coeff >= 0.0 && pressure_coeff <= 0.9)
         if(j >= 0 && j < NUM_OF_CHANNELS)
+        {
+            fprintf(stderr, "Sending %f\n", pressure_coeff);
             setDARegister(j, (unsigned short)(pressure_coeff * resolution));
+        }
 }
 
 void bbio::setRefOutputs(const double *v)
@@ -237,8 +240,10 @@ void bbio::setRefOutputs(const double *v)
     unsigned short resolution = 0x0FFF;
         for(int j = 0; j < NUM_OF_CHANNELS; j++)
             if(v[j]/100.0 >= 0.0 && v[j]/100.0 <= 0.9)
+            {
+                fprintf(stderr, "Sending %f\n", v[j]/100.0);
                 setDARegister(j, (unsigned short)(v[j]/100.0 * resolution));
-    
+            }
 }
 
 
