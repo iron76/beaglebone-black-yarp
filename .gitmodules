@@ -1,0 +1,6 @@
+[submodule "src/libraries/BBBIOlib"]
+	path = src/libraries/BBBIOlib
+	url = https://github.com/iron76/BBBIOlib.git
+[submodule "src/libraries/BeagleBone-GPIO"]
+	path = src/libraries/BeagleBone-GPIO
+	url = https://github.com/iron76/BeagleBone-GPIO.git
