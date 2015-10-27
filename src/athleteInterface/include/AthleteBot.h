@@ -499,9 +499,6 @@ public:
     
     virtual bool getControlMode(int j, int *mode)
     {
-#ifdef _ENABLE_DEBUG_
-        fprintf(stderr, "Calling getControlMode mode \n");
-#endif
         *mode = m_controlMode(j);
         return true;
     }
