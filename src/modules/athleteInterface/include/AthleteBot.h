@@ -30,7 +30,6 @@ public IPositionControl,
 public IVelocityControl,
 public IAmplifierControl,
 public IEncodersTimed,
-public IFrameGrabberImage,
 public IControlCalibration2,
 public IOpenLoopControl,
 public IControlLimits,
@@ -81,10 +80,7 @@ public:
     }
     
     virtual bool open(yarp::os::Searchable& config);
-    
-    // IFrameGrabberImage
-    virtual bool getImage(yarp::sig::ImageOf<yarp::sig::PixelRgb>& image);
-    
+        
     virtual int height() const {
         return m_h;
     }
