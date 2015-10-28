@@ -7,15 +7,18 @@ export MY_CODE_DIR=$1
     sudo apt-get -y install cmake
     sudo apt-get -y install libgsl0-dev 
 
-    echo 'source ~/.bash_profile'                                                  >> ~/.bashrc 
-    echo '#YARP'                                                                   >> ~/.bash_profile
-    echo "CODE_DIR="$1                                                             >> ~/.bash_profile
-    echo 'export PATH=$PATH:$CODE_DIR/bin/bin'                                     >> ~/.bash_profile
-    echo 'export YARP_DIR=$CODE_DIR/yarp'                                          >> ~/.bash_profile
-    echo 'export YARP_DATA_DIRS=$CODE_DIR/bin/share/yarp:$CODE_DIR/bin/share/yarp' >> ~/.bash_profile
-    echo 'source $CODE_DIR/yarp/scripts/yarp_completion'                           >> ~/.bash_profile
-    echo 'export icub_firmware_shared_DIR=$CODE_DIR/icub-firmware-shared/build'   >> ~/.bash_profile
-    source ~/.bashrc
+    echo 'source ~/.bash_profile'                                                        >> ~/.bashrc 
+    echo '#YARP'                                                                         >> ~/.bash_profile
+    echo "MY_CODE_DIR="$1                                                                >> ~/.bash_profile
+    echo 'export PATH=$PATH:$MY_CODE_DIR/bin/bin'                                        >> ~/.bash_profile
+    export PATH=$PATH:$MY_CODE_DIR/bin/bin
+    echo 'export YARP_DIR=$MY_CODE_DIR/yarp'                                             >> ~/.bash_profile
+    export YARP_DIR=$MY_CODE_DIR/yarp
+    echo 'export YARP_DATA_DIRS=$MY_CODE_DIR/bin/share/yarp:$MY_CODE_DIR/bin/share/yarp' >> ~/.bash_profile
+    export YARP_DATA_DIRS=$MY_CODE_DIR/bin/share/yarp:$MY_CODE_DIR/bin/share/yarp
+    echo 'source $MY_CODE_DIR/yarp/scripts/yarp_completion'                              >> ~/.bash_profile
+    echo 'export icub_firmware_shared_DIR=$MY_CODE_DIR/icub-firmware-shared/build'       >> ~/.bash_profile
+    export icub_firmware_shared_DIR=$MY_CODE_DIR/icub-firmware-shared/build
 
     # YARP
     cd $MY_CODE_DIR
@@ -28,7 +31,6 @@ export MY_CODE_DIR=$1
     make install
     
     #ICUB_FIRMWARE_SHARED
-    export icub_firmware_shared_DIR=$CODE_DIR/icub-firmware-shared/build
     cd $MY_CODE_DIR
     git clone https://github.com/robotology/icub-firmware-shared.git
     cd icub-firmware-shared
