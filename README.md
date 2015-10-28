@@ -8,11 +8,6 @@ The beaglebone-black-yarp has three dependecies. The first one is yarp which is 
 
 ##### Step 0 of installation: decide where to put the code
 ```
-export BBB_YARP_DIR=/path/where/to/install
-```
-e.g.
-
-```
 export BBB_YARP_DIR=/home/${USER}/Code
 ```
 
@@ -43,6 +38,7 @@ Assuming the software was installed in the directory beaglebone-black-yarp_DIR t
 
 ```
 sudo $BBB_YARP_DIR/beaglebone-black-yarp/scripts/set_bus.sh
+echo 'export BBB_YARP_DIR=$BBB_YARP_DIR/yarp' >> ~/.bashrc
 ```
 
 #### Launching
