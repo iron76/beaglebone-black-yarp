@@ -8,32 +8,32 @@ The beaglebone-black-yarp has three dependecies. The first one is yarp which is 
 
 ##### Step 0 of installation: decide where to put the code
 ```
-export INSTALL_DIR=/path/where/to/install
+export BBB_YARP_DIR=/path/where/to/install
 ```
 e.g.
 
 ```
-export INSTALL_DIR=/home/${USER}/Code
+export BBB_YARP_DIR=/home/${USER}/Code
 ```
 
 ##### Step 1 of installation: cloning the repo
 ```
-mkdir $INSTALL_DIR
-cd $INSTALL_DIR
+mkdir $BBB_YARP_DIR
+cd $BBB_YARP_DIR
 git clone http://svc/gitbucket/git/iron/beaglebone-black-yarp.git 
 ```
 
 ##### Step 2 of installation: yarp
 ```
-./$INSTALL_DIR/beaglebone-black-yarp/scripts/yarp_install.sh $INSTALL_DIR
+./$BBB_YARP_DIR/beaglebone-black-yarp/scripts/yarp_install.sh $BBB_YARP_DIR
 ```
 
 ##### Step 3 of installation: beaglebone-black-yarp
 ```
-cd $INSTALL_DIR/beaglebone-black-yarp
+cd $BBB_YARP_DIR/beaglebone-black-yarp
 mkdir build
 cd build
-cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR/bin
+cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$BBB_YARP_DIR/bin
 make
 sudo make install
 ```
@@ -42,11 +42,11 @@ sudo make install
 Assuming the software was installed in the directory beaglebone-black-yarp_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board.
 
 ```
-sudo $INSTALL_DIR/beaglebone-black-yarp/scripts/set_bus.sh
+sudo $BBB_YARP_DIR/beaglebone-black-yarp/scripts/set_bus.sh
 ```
 
 #### Launching
 
 ```
-run_athletebot --from $INSTALL_DIR/beaglebone-black-yarp/src/modules/athleteInterface/athletebot.ini
+run_athletebot --from $BBB_YARP_DIR/beaglebone-black-yarp/src/modules/athleteInterface/athletebot.ini
 ```
