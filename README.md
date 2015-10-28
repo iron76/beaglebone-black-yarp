@@ -38,7 +38,7 @@ Assuming the software was installed in the directory beaglebone-black-yarp_DIR t
 
 ```
 sudo $BBB_YARP_DIR/beaglebone-black-yarp/scripts/set_bus.sh
-echo 'export BBB_YARP_DIR=$BBB_YARP_DIR/yarp' >> ~/.bashrc
+echo "export BBB_YARP_DIR=$BBB_YARP_DIR/yarp" >> ~/.bashrc
 ```
 
 #### Launching
