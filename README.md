@@ -14,9 +14,13 @@ make
 sudo make install
 ```
 
-#### Launching
-
+#### Configuring
+Assuming the software was installed in the direcotry beaglebone-black-yarp_INSTALL_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board. 
 ```
-sudo ../src/modules/athleteInterface/scripts/set_bus.sh 
-run_athletebot --from ../src/modules/athleteInterface/athletebot.ini
+sudo ${beaglebone-black-yarp_INSTALL_DIR}/scripts/set_bus.sh 
+```
+
+#### Launching
+```
+run_athletebot --from ${beaglebone-black-yarp_INSTALL_DIR}/src/modules/athleteInterface/athletebot.ini
 ```
