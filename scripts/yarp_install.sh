@@ -1,5 +1,3 @@
-
-
 if [ "$1" != "" ]; then
 export MY_CODE_DIR=$1
     echo "The code will be installed in the directory " $MY_CODE_DIR
@@ -32,7 +30,7 @@ export MY_CODE_DIR=$1
     cd icub
     mkdir build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$MY_CODE_DIR/bin -DINSTALL_WITH_RPATH:STRING=ON
+    cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$MY_CODE_DIR/bin -DICUB_INSTALL_WITH_RPATH:STRING=ON
     make
     make install
 else
@@ -42,4 +40,3 @@ else
     echo "E.g. ./yarp_install.sh /home/user/Code"
     echo "Contact: iron@liralab.it (Francesco Nori)"
 fi
-
