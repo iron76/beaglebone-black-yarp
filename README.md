@@ -6,7 +6,7 @@ A bunch of files for the installation of YARP on BeagleBone black board (http://
 #### Installation
 
 ```
-git clone http://svc/gitbucket/git/iron/beaglebone-black-yarp.git```
+git clone http://svc/gitbucket/git/iron/beaglebone-black-yarp.git
 cd beaglebone-black-yarp
 mkdir build
 cmake ..
@@ -19,5 +19,4 @@ sudo make install
 ```
 sudo ../src/modules/athleteInterface/scripts/set_bus.sh 
 run_athletebot --from ../src/modules/athleteInterface/athletebot.ini
-
 ```
