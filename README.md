@@ -9,15 +9,15 @@ git clone http://svc/gitbucket/git/iron/beaglebone-black-yarp.git
 ```
 
 #### Installation: yarp
-Assuming the software was installed in the direcotry beaglebone-black-yarp_INSTALL_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board. 
+Assuming the software was installed in the direcotry beaglebone-black-yarp_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board. 
 ```
-./${beaglebone-black-yarp_INSTALL_DIR}/scripts/yarp_install.sh
+./${beaglebone-black-yarp_DIR}/scripts/yarp_install.sh
 ```
 
 #### Installation: beaglebone-black-yarp
-Assuming the software was installed in the direcotry beaglebone-black-yarp_INSTALL_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board. 
+Assuming the software was installed in the direcotry beaglebone-black-yarp_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board. 
 ```
-cd ${beaglebone-black-yarp_INSTALL_DIR}
+cd ${beaglebone-black-yarp_DIR}
 mkdir build
 cd build
 cmake ..
@@ -26,12 +26,12 @@ sudo make install
 ```
 
 #### Configuring
-Assuming the software was installed in the direcotry beaglebone-black-yarp_INSTALL_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board. 
+Assuming the software was installed in the direcotry beaglebone-black-yarp_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board. 
 ```
-sudo ${beaglebone-black-yarp_INSTALL_DIR}/scripts/set_bus.sh
+sudo ${beaglebone-black-yarp_DIR}/scripts/set_bus.sh
 ```
 
 #### Launching
 ```
-run_athletebot --from ${beaglebone-black-yarp_INSTALL_DIR}/src/modules/athleteInterface/athletebot.ini
+run_athletebot --from ${beaglebone-black-yarp_DIR}/src/modules/athleteInterface/athletebot.ini
 ```
