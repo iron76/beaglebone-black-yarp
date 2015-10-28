@@ -11,6 +11,7 @@ The beaglebone-black-yarp has three dependecies. The first one is yarp which is 
 export INSTALL_DIR=/path/where/to/install
 ```
 e.g.
+
 ```
 export INSTALL_DIR=/home/${USER}/Code
 ```
