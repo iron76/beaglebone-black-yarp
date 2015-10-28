@@ -18,17 +18,19 @@ export INSTALL_DIR=/home/${USER}/Code
 
 ##### Step 1 of installation: cloning the repo
 ```
+mkdir $INSTALL_DIR
+cd $INSTALL_DIR
 git clone http://svc/gitbucket/git/iron/beaglebone-black-yarp.git 
 ```
 
 ##### Step 2 of installation: yarp
 ```
-./${beaglebone-black-yarp_DIR}/scripts/yarp_install.sh $INSTALL_DIR
+./$INSTALL_DIR/beaglebone-black-yarp/scripts/yarp_install.sh $INSTALL_DIR
 ```
 
 ##### Step 3 of installation: beaglebone-black-yarp
 ```
-cd ${beaglebone-black-yarp_DIR}
+cd $INSTALL_DIR/beaglebone-black-yarp
 mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR/bin
@@ -40,11 +42,11 @@ sudo make install
 Assuming the software was installed in the directory beaglebone-black-yarp_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board.
 
 ```
-sudo ${beaglebone-black-yarp_DIR}/scripts/set_bus.sh
+sudo $INSTALL_DIR/beaglebone-black-yarp/scripts/set_bus.sh
 ```
 
 #### Launching
 
 ```
-run_athletebot --from ${beaglebone-black-yarp_DIR}/src/modules/athleteInterface/athletebot.ini
+run_athletebot --from $INSTALL_DIR/beaglebone-black-yarp/src/modules/athleteInterface/athletebot.ini
 ```
