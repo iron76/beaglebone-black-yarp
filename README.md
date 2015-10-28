@@ -7,19 +7,19 @@ A bunch of files for the installation of YARP on BeagleBone black board (http://
 
 The beaglebone-black-yarp has three dependecies. The first one is yarp which is configured with a script. The second and third one are submodules in the repostory.
 
-##### Installation: cloning the repo
+##### Step 1 of installation: cloning the repo
 ```
 git clone http://svc/gitbucket/git/iron/beaglebone-black-yarp.git
 ```
 
-##### Installation: yarp
+##### Step 2 of installation: yarp
 Assuming the software was installed in the direcotry beaglebone-black-yarp_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board.
 
 ```
 ./${beaglebone-black-yarp_DIR}/scripts/yarp_install.sh
 ```
 
-##### Installation: beaglebone-black-yarp
+##### Step 3 of installation: beaglebone-black-yarp
 Assuming the software was installed in the direcotry beaglebone-black-yarp_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board.
 
 ```
