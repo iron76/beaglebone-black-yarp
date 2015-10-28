@@ -6,11 +6,6 @@ A bunch of files for the installation of YARP on BeagleBone black board (http://
 #### Installation: cloning the repo
 ```
 git clone http://svc/gitbucket/git/iron/beaglebone-black-yarp.git
-cd beaglebone-black-yarp
-mkdir build
-cmake ..
-make
-sudo make install
 ```
 
 #### Installation: yarp
