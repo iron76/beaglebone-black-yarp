@@ -2,6 +2,15 @@
 
 A bunch of files for the installation of YARP on BeagleBone black board (http://beagleboard.org). This files have been initiated by Francesco Nori when visiting the ISI laboratoy at the Univeristy of Tokyo (October 2015). The code requires the installation of Ubuntu 14.04 on the Beagle Bone black. Since no YARP binaries exist for ARM achitectures it is necessary to compile the software by downloading it from git. 
 
+#### Features
+
+ - Compiles both YARP and iCub git repositories on the beagleBone (ARM) hardware.
+ - Configure the system to use GPIO pins.
+ - Includes a module for creating a yarp::dev::ControlBoardWrapper to export data from SPI connections.
+ - Configure the BeagleBone hardware for using the CAN-USB2 from ESD (https://esd.eu/en/products/can-usb2) to read a CAN-bus.
+ - Uses the socketcan to read force/torque sensors and export them as yarp::dev::AnalogSensors.
+ - Configure the hardware to read an Mtx IMU from Xsens (https://www.xsens.com/products/mtx/) via the USB to CAN (directly reading from serial port not currrently available for 3.3 vs 5 volts incompatibility).
+
 #### Installation
 
 The beaglebone-black-yarp has three dependecies. The first one is yarp which is configured with a script. The second and third one are submodules in the repostory.
@@ -73,12 +82,3 @@ From the console PC launch the yarpmanager
 user@console:~$ yarpmanager --application ./$BBB_YARP_DIR/beaglebone-black-yarp/conf/app.xml
 
 ```
-
-#### Features
-
- - Compiles both YARP and iCub git repositories on the beagleBone (ARM) hardware.
- - Configure the system to use GPIO pins.
- - Includes a module for exporting a yarp::dev::ControlBoardWrapper.
- - Configure the BeagleBone hardware for using the CAN-USB2 from ESD (https://esd.eu/en/products/can-usb2).
- - Uses the socketcan to read force/torque sensors as yarp::dev::AnalogSensors.
- - Configure the hardware to read an Mtx IMU from Xsens via the USB to CAN (directly reading from serial port not currrently available for 3.3 vs 5 volts incompatibility).
