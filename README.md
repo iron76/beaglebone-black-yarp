@@ -67,13 +67,16 @@ source ~/.bashrc
 From a console PC on the same network with YARP installed (instructions here http://www.yarp.it/install.html) launch the server.
 
 ```
-user@console:~$ yarpserver
+user@console:~$ yarp namespace /athletebot
+user@console:~$ yarpserver --write
 
 ```
 
 From the BBB launch the yarprun:
 
 ```
+bbb-user@arm:~$ yarp namespace /athletebot
+bbb-user@arm:~$ yarp detect --write
 bbb-user@arm:~$ yarprun --server /bbb
 ```
 
