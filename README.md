@@ -8,13 +8,16 @@ The beaglebone-black-yarp has three dependecies. The first one is yarp which is 
 
 ##### Step 0 of installation: create a new user bbb-user
 ```
-adduser -m bbb-user sudo
-sudo passwd bbb-user
+sudo useradd -m bbb-user
+sudo adduser bbb-user sudo
+sudo passwd bbb-user 
+*** create password for bbb-user ***
 ```
 
 ##### Step 1 of installation: create a new user bbb-user
 ```
-su bbb-user
+su bbb-user 
+*** insert bbb-user password ***
 ```
 
 ##### Step 2 of installation: decide where to put the code
@@ -26,12 +29,12 @@ export BBB_YARP_DIR=/home/${USER}/Code
 ```
 mkdir $BBB_YARP_DIR
 cd $BBB_YARP_DIR
-git clone http://svc/gitbucket/git/iron/beaglebone-black-yarp.git 
+git clone http://svc.isi.imi.i.u-tokyo.ac.jp/gitbucket/git/iron/beaglebone-black-yarp.git 
 ```
 
 ##### Step 4 of installation: yarp
 ```
-./$BBB_YARP_DIR/beaglebone-black-yarp/scripts/yarp_install.sh $BBB_YARP_DIR
+$BBB_YARP_DIR/beaglebone-black-yarp/scripts/yarp_install.sh $BBB_YARP_DIR
 ```
 
 ##### Step 5 of installation: beaglebone-black-yarp
@@ -69,4 +72,3 @@ From the console PC launch the yarpmanager
 user@console:~$ yarpmanager --application ./$BBB_YARP_DIR/beaglebone-black-yarp/conf/app.xml
 
 ```
-
