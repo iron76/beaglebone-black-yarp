@@ -37,7 +37,7 @@ sudo make install
 Assuming the software was installed in the directory beaglebone-black-yarp_DIR the following command sets the proper GPIO configuration and should be exectued after every reboot of the BeagleBone board.
 
 ```
-sudo $BBB_YARP_DIR/beaglebone-black-yarp/scripts/set_bus.sh
+sudo $BBB_YARP_DIR/beaglebone-black-yarp/scripts/init_all.sh 
 echo "export BBB_YARP_DIR=$BBB_YARP_DIR/yarp" >> ~/.bashrc
 ```
 
