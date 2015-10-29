@@ -82,3 +82,11 @@ From the console PC launch the yarpmanager
 user@console:~$ yarpmanager --application ./$BBB_YARP_DIR/beaglebone-black-yarp/conf/app.xml
 
 ```
+#### Tips and tricks
+
+The kernel version shoudl be 4.1 and should be updated as suggested here: http://elinux.org/BeagleBoardUbuntu#Install_Latest_Kernel_Image
+```
+cd /opt/scripts/tools
+git pull
+./update_kernel.sh --beta-kernel
+```
