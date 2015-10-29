@@ -8,7 +8,7 @@
 my_dir="$(dirname "$0")"
 
 echo "Loading the can-bus ..."
-./$my_dir/can_load.sh
+./$my_dir/set_can.sh
 echo "Setting the GPIO properties  ..."
 sudo ./$my_dir/set_bus.sh
 echo "Adding current user to dialout (to read serial) ..."
