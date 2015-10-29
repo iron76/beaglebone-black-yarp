@@ -1,8 +1,8 @@
 if [ "$1" != "" ]; then
 export MY_CODE_DIR=$1
     echo "The code will be installed in the directory " $MY_CODE_DIR
-    mkdir $MY_CODE_DIR
-    mkdir $MY_CODE_DIR/bin
+    mkdir -p $MY_CODE_DIR
+    mkdir -p $MY_CODE_DIR/bin
     sudo apt-get -y install libace-dev
     sudo apt-get -y install cmake
     sudo apt-get -y install libgsl0-dev 
@@ -24,7 +24,7 @@ export MY_CODE_DIR=$1
     cd $MY_CODE_DIR
     git clone https://github.com/robotology/yarp.git
     cd yarp
-    mkdir build
+    mkdir -p build
     cd build
     cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$MY_CODE_DIR/bin -DCREATE_LIB_MATH:STRING=ON
     make
@@ -34,7 +34,7 @@ export MY_CODE_DIR=$1
     cd $MY_CODE_DIR
     git clone https://github.com/robotology/icub-firmware-shared.git
     cd icub-firmware-shared
-    mkdir build
+    mkdir -p build
     cd build
     cmake .. 
     make
@@ -43,7 +43,7 @@ export MY_CODE_DIR=$1
     cd $MY_CODE_DIR
     git clone https://github.com/robotology/icub-main.git ./icub
     cd icub
-    mkdir build
+    mkdir -p build
     cd build
 cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$MY_CODE_DIR/bin -DICUB_INSTALL_WITH_RPATH:STRING=ON -DENABLE_icubmod_canmotioncontrol:STRING=ON -DENABLE_icubmod_socketcan:STRING=ON -DENABLE_icubmod_xsensmtx:STRING=ON -DENABLE_icubmod_analogServer:STRING=ON -DNABLE_icubmod_sharedcan:STRING=ON -DENABLE_icubmod_canBusAnalogSensor:STRING=ON
     make
