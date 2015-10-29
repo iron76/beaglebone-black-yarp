@@ -5,7 +5,7 @@
         <name>run_athletebot</name>
         <parameters>--from athletebot.ini</parameters>
         <node>/bbb</node>
-        <workdir>/home/bbb-user/Code/beaglebone-black-yarp/src/athleteInterface</workdir>
+        <workdir>/home/bbb-user/Code/beaglebone-black-yarp/src/modules/athleteInterface</workdir>
     </module>
     
     <module>
