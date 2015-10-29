@@ -87,7 +87,7 @@ user@console:~$ export BBB_YARP_DIR=/home/${USER}/Code
 user@console:~$ mkdir -p $BBB_YARP_DIR
 user@console:~$ cd $BBB_YARP_DIR
 user@console:~$ git clone https://github.com/iron76/beaglebone-black-yarp.git 
-user@console:~$ yarpmanager --application ./$BBB_YARP_DIR/beaglebone-black-yarp/conf/app.xml
+user@console:~$ yarpmanager --application $BBB_YARP_DIR/beaglebone-black-yarp/conf/app.xml
 
 ```
 #### Tips and tricks
