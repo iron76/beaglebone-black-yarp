@@ -23,7 +23,7 @@ sudo passwd bbb-user
 *** create password for bbb-user, recommended 'bbb' ***
 ```
 
-##### Step 1 of installation: create a new user bbb-user
+##### Step 1 of installation: switch user to bbb-user
 ```
 su bbb-user 
 *** insert bbb-user password ***
