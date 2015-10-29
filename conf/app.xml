@@ -5,14 +5,14 @@
         <name>run_athletebot</name>
         <parameters>--from athletebot.ini</parameters>
         <node>/bbb</node>
-        <workdir>/home/iron/Code/beaglebone-black-yarp/src/athleteInterface</workdir>
+        <workdir>/home/bbb-user/Code/beaglebone-black-yarp/src/athleteInterface</workdir>
     </module>
     
     <module>
         <name>robotInterface</name>
         <parameters>--from robotInterface.ini</parameters>
         <node>/bbb</node>
-        <workdir>/home/iron/Code/beaglebone-black-yarp/conf/athletebot</workdir>
+        <workdir>/home/bbb-user/Code/beaglebone-black-yarp/conf/athletebot</workdir>
     </module>
     
     <module>
