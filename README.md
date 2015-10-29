@@ -60,6 +60,7 @@ sudo make install
 ```
 sudo $BBB_YARP_DIR/beaglebone-black-yarp/scripts/init_all.sh 
 echo "export BBB_YARP_DIR=$BBB_YARP_DIR/yarp" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 #### Launching
