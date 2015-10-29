@@ -11,7 +11,7 @@ The beaglebone-black-yarp has three dependecies. The first one is yarp which is 
 sudo useradd -m bbb-user
 sudo adduser bbb-user sudo
 sudo passwd bbb-user 
-*** create password for bbb-user ***
+*** create password for bbb-user, recommended 'bbb' ***
 ```
 
 ##### Step 1 of installation: create a new user bbb-user
@@ -73,3 +73,12 @@ From the console PC launch the yarpmanager
 user@console:~$ yarpmanager --application ./$BBB_YARP_DIR/beaglebone-black-yarp/conf/app.xml
 
 ```
+
+#### Features
+
+ - Compiles both YARP and iCub git repositories on the beagleBone (ARM) hardware.
+ - Configure the system to use GPIO pins.
+ - Includes a module for exporting a yarp::dev::ControlBoardWrapper.
+ - Configure the BeagleBone hardware for using the CAN-USB2 from ESD (https://esd.eu/en/products/can-usb2).
+ - Uses the socketcan to read force/torque sensors as yarp::dev::AnalogSensors.
+ - Configure the hardware to read an Mtx IMU from Xsens via the USB to CAN (directly reading from serial port not currrently available for 3.3 vs 5 volts incompatibility).
