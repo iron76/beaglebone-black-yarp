@@ -88,8 +88,10 @@ user@console:~$ mkdir -p $BBB_YARP_DIR
 user@console:~$ cd $BBB_YARP_DIR
 user@console:~$ git clone https://github.com/iron76/beaglebone-black-yarp.git 
 user@console:~$ yarpmanager --application $BBB_YARP_DIR/beaglebone-black-yarp/conf/app.xml
-
 ```
+
+Among applications find AthleteRobotInterface and launch the different modules.
+
 #### Tips and tricks
 
 The kernel version shoudl be 4.1 and should be updated as suggested here: http://elinux.org/BeagleBoardUbuntu#Install_Latest_Kernel_Image
