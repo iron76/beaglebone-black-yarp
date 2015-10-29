@@ -62,6 +62,7 @@ user@console:~$ yarpserver
 ```
 
 From the BBB launch the yarprun:
+
 ```
 bbb-user@arm:~$ yarprun --server /bbb
 ```
