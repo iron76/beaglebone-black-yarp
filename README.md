@@ -38,7 +38,7 @@ export BBB_YARP_DIR=/home/${USER}/Code
 ```
 mkdir $BBB_YARP_DIR
 cd $BBB_YARP_DIR
-git clone http://svc.isi.imi.i.u-tokyo.ac.jp/gitbucket/git/iron/beaglebone-black-yarp.git 
+git clone https://github.com/iron76/beaglebone-black-yarp.git 
 ```
 
 ##### Step 4 of installation: yarp
