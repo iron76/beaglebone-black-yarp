@@ -83,7 +83,7 @@ bbb-user@arm:~$ yarprun --server /bbb
 From the console PC launch the yarpmanager
 
 ```
-user@console:~$ export BBB_YARP_DIR=/home/${USER}/Code
+user@console:~$ export BBB_YARP_DIR=$HOME/Code
 user@console:~$ mkdir -p $BBB_YARP_DIR
 user@console:~$ cd $BBB_YARP_DIR
 user@console:~$ git clone https://github.com/iron76/beaglebone-black-yarp.git 
