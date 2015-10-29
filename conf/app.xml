@@ -1,22 +1,24 @@
-<application> 
-	<name>AthleteRobotInterface</name> //this can be anything, just a symbolic name 
-	
-	<module> 
-		<name>run_athletebot</name>
-		<parameters>--from athletebot.ini</parameters>
-		<node>/bbb</node> 
-		<workdir>/home/iron/Code/beaglebone-black-yarp/src/athleteInterface</workdir> 
-	</module> 
-
-	<module> 
-		<name>yarpscope</name>
-		<parameters>--remote /athletebot/torso/state:o</parameters>
-		<node>/iron</node> 
-	</module> 
-
-	
-	<connection> 
-		<from>/cam/right</from> 
-		<to>/view/right</to> 
-	</connection> 	
+<application>
+    <name>AthleteRobotInterface</name> //this can be anything, just a symbolic name
+    
+    <module>
+        <name>run_athletebot</name>
+        <parameters>--from athletebot.ini</parameters>
+        <node>/bbb</node>
+        <workdir>/home/iron/Code/beaglebone-black-yarp/src/athleteInterface</workdir>
+    </module>
+    
+    <module>
+        <name>robotInterface</name>
+        <parameters>--from robotInterface.ini</parameters>
+        <node>/bbb</node>
+        <workdir>/home/iron/Code/beaglebone-black-yarp/conf/athletebot</workdir>
+    </module>
+    
+    <module>
+        <name>yarpdev</name>
+        <parameters>--device inertial --name /athletebot/inertial --subdevice xsensmtx --serial /dev/ttyUSB0</parameters>
+        <node>/bbb</node>
+    </module>
+    
 </application>

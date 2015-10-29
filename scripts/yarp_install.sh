@@ -45,7 +45,7 @@ export MY_CODE_DIR=$1
     cd icub
     mkdir build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$MY_CODE_DIR/bin -DICUB_INSTALL_WITH_RPATH:STRING=ON -DENABLE_icubmod_canmotioncontrol:STRING=ON -DENABLE_icubmod_socketcan:STRING=ON -DENABLE_icubmod_xsensmtx:STRING=ON
+cmake .. -DCMAKE_INSTALL_PREFIX:PATH=$MY_CODE_DIR/bin -DICUB_INSTALL_WITH_RPATH:STRING=ON -DENABLE_icubmod_canmotioncontrol:STRING=ON -DENABLE_icubmod_socketcan:STRING=ON -DENABLE_icubmod_xsensmtx:STRING=ON -DENABLE_icubmod_analogServer:STRING=ON -DNABLE_icubmod_sharedcan:STRING=ON
     make
     make install
 else
