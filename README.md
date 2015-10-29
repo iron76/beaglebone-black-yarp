@@ -94,7 +94,14 @@ Among applications find AthleteRobotInterface and launch the different modules.
 
 #### Tips and tricks
 
-The kernel version shoudl be 4.1 and should be updated as suggested here: http://elinux.org/BeagleBoardUbuntu#Install_Latest_Kernel_Image
+The kernel version shoudl be 4.1 and should be updated as suggested here: http://elinux.org/BeagleBoardUbuntu#Install_Latest_Kernel_Image. First you need
+the git repository.
+```
+cd /opt
+git clone https://github.com/RobertCNelson/boot-scripts.git ./scripts
+```
+
+Once you have the repository, you can update the kernel by pulling the latest commits and using the following commands.
 ```
 cd /opt/scripts/tools
 git pull
