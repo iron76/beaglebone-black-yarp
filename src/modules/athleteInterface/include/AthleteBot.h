@@ -55,9 +55,7 @@ private:
     void init();
 public:
     AthleteBot() {
-#ifndef _DISABLE_IO_
-        m_bbio.open();
-#endif
+
         m_bbio.getAxes(&m_njoints);
         m_w = 128;
         m_h = 128;
@@ -77,6 +75,10 @@ public:
             m_referenceOuputs[i] = 0;
         }
         init();
+#ifndef _DISABLE_IO_
+        m_bbio.open();
+        m_bbio.setRefOutputs(m_referenceOuputs.data());
+#endif        
     }
     
     virtual bool open(yarp::os::Searchable& config);
