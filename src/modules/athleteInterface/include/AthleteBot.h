@@ -65,7 +65,7 @@ public:
         m_trajectoryGenerationReferenceAcc.size(m_njoints);   /* desired acc for vel generation */
         m_positions.size(m_njoints);
         m_referenceOuputs.size(m_njoints);
-        m_controlMode.resize(m_njoints,(int) VOCAB_IOPENLOOP);
+        m_controlMode.resize(m_njoints,(int) VOCAB_CM_OPENLOOP);
         for (int i=0; i<m_njoints; i++) {
             m_referencePositions[i] = 0;
             m_referenceVelocities[i] = 0;
