@@ -205,9 +205,6 @@ void bbio::close(){
     iolib_free();
 }
 
-void bbio::getAxes(int *ax) {
-    *ax = NUM_ADC_PORT;
-}
 
 void bbio::getEncoder(int j, double *v){
     SPI_read();

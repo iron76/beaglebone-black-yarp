@@ -14,6 +14,7 @@
 #include <yarp/sig/Vector.h>
 #include <yarp/sig/Image.h>
 #include <yarp/os/Time.h>
+#include <map>
 
 // BeagleBone black GPIO access
 #include <BeagleBoneInputOutput.h>
@@ -40,57 +41,38 @@ public yarp::os::Thread
 {
 private:
     int m_njoints;
-    // double m_x, m_y;
-    // double m_dx, m_dy;
-    // double m_tx, m_ty;
-    // double m_tdx, m_tdy;
     
-    int m_w, m_h;
-    double noiseLevel;
-    yarp::sig::Vector m_referencePositions, m_referenceVelocities, m_trajectoryGenerationReferenceSpeed, m_trajectoryGenerationReferenceAcc, m_positions, m_referenceOuputs;
+    std::map<std::string,int> m_bbbiomap;
+    std::map<std::string,PIN> m_gpiomap;
+
+    yarp::sig::Vector m_referencePositions;
+    yarp::sig::Vector m_referenceVelocities;
+    yarp::sig::Vector m_trajectoryGenerationReferenceSpeed;
+    yarp::sig::Vector m_trajectoryGenerationReferenceAcc;
+    yarp::sig::Vector m_positions;
+    yarp::sig::Vector m_referenceOuputs;
     yarp::sig::VectorOf<int> m_controlMode;
-    yarp::sig::ImageOf<yarp::sig::PixelRgb> back, fore;
+    yarp::sig::VectorOf<std::string> m_jointNames;
+
+    yarp::sig::VectorOf<std::string> m_bbbiosclk;
+    yarp::sig::VectorOf<std::string> m_bbbiomosi;
+    yarp::sig::VectorOf<std::string> m_bbbiomiso;
+    yarp::sig::VectorOf<std::string> m_bbbioss;
+    
+    yarp::sig::VectorOf<std::string> m_gpiosclk;
+    yarp::sig::VectorOf<std::string> m_gpiomosi;
+    yarp::sig::VectorOf<std::string> m_gpiomiso;
+    yarp::sig::VectorOf<std::string> m_gpioss;
+    
     bbio m_bbio;
     
     void init();
 public:
-    AthleteBot() {
-
-        m_bbio.getAxes(&m_njoints);
-        m_w = 128;
-        m_h = 128;
-        m_referencePositions.size(m_njoints);                 /* desired reference positions */
-        m_referenceVelocities.size(m_njoints);                /* desired reference speeds */
-        m_trajectoryGenerationReferenceSpeed.size(m_njoints); /* desired speed for trj generation */
-        m_trajectoryGenerationReferenceAcc.size(m_njoints);   /* desired acc for vel generation */
-        m_positions.size(m_njoints);
-        m_referenceOuputs.size(m_njoints);
-        m_controlMode.resize(m_njoints,(int) VOCAB_CM_OPENLOOP);
-        for (int i=0; i<m_njoints; i++) {
-            m_referencePositions[i] = 0;
-            m_referenceVelocities[i] = 0;
-            m_trajectoryGenerationReferenceSpeed[i] = 0;
-            m_trajectoryGenerationReferenceAcc[i] = 0;
-            m_positions[i] = 0;
-            m_referenceOuputs[i] = 0;
-        }
-        init();
-#ifndef _DISABLE_IO_
-        m_bbio.open();
-        m_bbio.setRefOutputs(m_referenceOuputs.data());
-#endif        
-    }
+    AthleteBot() { }
     
     virtual bool open(yarp::os::Searchable& config);
-        
-    virtual int height() const {
-        return m_h;
-    }
-    
-    virtual int width() const {
-        return m_w;
-    }
-    
+
+    bool getNamesFromConfig(yarp::os::Searchable& config, yarp::sig::VectorOf<std::string>& names_vector, const std::string key_string);  /* parsing the name of joints */
     
     
     // IPositionControl etc.
