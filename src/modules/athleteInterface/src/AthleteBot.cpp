@@ -83,11 +83,18 @@ void AthleteBot::init() {
 
 bool AthleteBot::open(yarp::os::Searchable& config) {
     
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Checking the configuration file \n");
+#endif
+    
     m_njoints = config.check("number_of_joints",Value(0),
                              "number of joints").asInt();
     assert(m_njoints > 0);
     init();
-    
+
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Parsing the names for joints and pins \n");
+#endif
     bool ok = true;
     ok = ok & getNamesFromConfig(config, m_jointNames, "joint_names");
     // BBBIO pins
@@ -105,7 +112,10 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
     {
         return false;
     }
-    
+
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Double checking the name of bbbio pins\n");
+#endif
     std::map<std::string,int>::iterator it_bbb;
     for (int i=0; i<m_njoints; i++)
     {
@@ -124,7 +134,10 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
         }
         
     }
-    
+
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Double checking the name of gpio pins\n");
+#endif
     std::map<std::string,PIN>::iterator it_gp;
     for (int i=0; i<m_njoints; i++)
     {
