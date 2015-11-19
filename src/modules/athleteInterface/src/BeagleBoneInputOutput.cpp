@@ -9,14 +9,14 @@
 
 #include <BeagleBoneInputOutput.h>
 
-#define pin_spi_cs1  P9_28 // 3_17=113
 #define pin_spi_mosi P9_30 // 3_15=112
 #define pin_spi_sclk P9_31 // 3_14=110
-#define pin_spi_cs2  P9_42 // 0_7 =7
 
 #define NUM_ADC 1
 #define NUM_ADC_PORT 8
 #define NUM_OF_CHANNELS 8
+
+PIN pin_spi_cs[]={P9_28,P9_42}; // 3_17=113, 0_7 =7
 
 //sclk_bbbio         BBBIO_GPIO_PIN_16
 //mosi_bbbio         BBBIO_GPIO_PIN_13
@@ -41,8 +41,8 @@ void init_pins()
 {
     set_SCLK(LOW);
     set_MOSI(LOW);
-    setCS(LOW, pin_spi_cs1);
-    setCS(LOW, pin_spi_cs2);
+    setCS(LOW, pin_spi_cs[0]);
+    setCS(LOW, pin_spi_cs[1]);
 }
 
 unsigned char transmit8bit(unsigned char output_data){
@@ -79,15 +79,15 @@ void setDARegister(unsigned char ch, unsigned short dac_data){
     
     if (ch < 8) {
         register_data = (((unsigned short)ch << 12) & 0x7000) | (dac_data & 0x0fff);
-        setCS(true, pin_spi_cs1);
+        setCS(true, pin_spi_cs[0]);
         transmit16bit(register_data);
-        setCS(false, pin_spi_cs1);
+        setCS(false, pin_spi_cs[0]);
     }
     else if (ch >= 8) {
         register_data = (((unsigned short)(ch & 0x0007) << 12) & 0x7000) | (dac_data & 0x0fff);
-        setCS(true, pin_spi_cs2);
+        setCS(true, pin_spi_cs[1]);
         transmit16bit(register_data);
-        setCS(false, pin_spi_cs2);
+        setCS(false, pin_spi_cs[1]);
     }
 }
 
@@ -95,22 +95,22 @@ void init_DAConvAD5328(void) {
     set_clock_edge(false);// negative clock (use falling-edge)
     
     // initialize chip 1
-    setCS(true, pin_spi_cs1);
+    setCS(true, pin_spi_cs[0]);
     transmit16bit(0xa000);// synchronized mode
-    setCS(false, pin_spi_cs1);
+    setCS(false, pin_spi_cs[0]);
     
-    setCS(true, pin_spi_cs1);
+    setCS(true, pin_spi_cs[0]);
     transmit16bit(0x8003);// Vdd as reference
-    setCS(false, pin_spi_cs1);
+    setCS(false, pin_spi_cs[0]);
     
     // initialize chip 2
-    setCS(true, pin_spi_cs2);
+    setCS(true, pin_spi_cs[1]);
     transmit16bit(0xa000);// synchronized mode
-    setCS(false, pin_spi_cs2);
+    setCS(false, pin_spi_cs[1]);
     
-    setCS(true, pin_spi_cs2);
+    setCS(true, pin_spi_cs[1]);
     transmit16bit(0x8003);// Vdd as reference
-    setCS(false, pin_spi_cs2);
+    setCS(false, pin_spi_cs[1]);
 }
 
 void bbio::SPI_read()
