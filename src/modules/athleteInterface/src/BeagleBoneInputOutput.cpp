@@ -181,10 +181,16 @@ void bbio::SPI_read()
 void bbio::open(){
     
     // GPIO init
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Initializing the DAC converter \n");
+#endif
     init();
     init_pins(); // ALL 5 pins are HIGH except for GND
     init_DAConvAD5328();
-    
+
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Initializing the PINS \n");
+#endif
     m_port_clk_SPI  = new unsigned int(NUM_ADC);
     m_port_din_SPI  = new unsigned int(NUM_ADC);
     m_port_dout_SPI = new unsigned int(NUM_ADC);
