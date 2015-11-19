@@ -40,6 +40,9 @@ bool AthleteBot::getNamesFromConfig(yarp::os::Searchable& config, yarp::sig::Vec
     for(unsigned int i=0; i < m_njoints; i++ )
     {
         std::string controlboard_joint_name(joint_names_bottle.get(i+1).asString().c_str());
+#ifdef _ENABLE_DEBUG_
+        std::cout << "AthleteBot::getNamesFromConfig(): " << controlboard_joint_name << std::endl;
+#endif
         names_vector(i) = controlboard_joint_name;
     }
     return true;
@@ -93,16 +96,22 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
     init();
 
 #ifdef _ENABLE_DEBUG_
-    fprintf(stderr, "Parsing the names for joints and pins \n");
+    fprintf(stderr, "Parsing the names for joints\n");
 #endif
     bool ok = true;
     ok = ok & getNamesFromConfig(config, m_jointNames, "joint_names");
     // BBBIO pins
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Parsing the names of bbbio pins\n");
+#endif
     ok = ok & getNamesFromConfig(config, m_bbbiosclk,  "sclk_bbbio");
     ok = ok & getNamesFromConfig(config, m_bbbiomosi,  "mosi_bbbio");
     ok = ok & getNamesFromConfig(config, m_bbbiomiso,  "miso_bbbio");
     ok = ok & getNamesFromConfig(config, m_bbbioss,    "ss_bbbio");
     // GPIO pins
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Parsing the names of gpio pins\n");
+#endif
     ok = ok & getNamesFromConfig(config, m_gpiosclk, "sclk_gpio");
     ok = ok & getNamesFromConfig(config, m_gpiomosi, "mosi_gpio");
     ok = ok & getNamesFromConfig(config, m_gpiomiso, "miso_gpio");
