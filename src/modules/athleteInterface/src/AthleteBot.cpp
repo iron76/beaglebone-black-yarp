@@ -94,6 +94,7 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
                              "number of joints").asInt();
     assert(m_njoints > 0);
     init();
+    m_bbio.allocate();
 
 #ifdef _ENABLE_DEBUG_
     fprintf(stderr, "Parsing the names for joints (%d) \n", m_njoints);

@@ -178,6 +178,14 @@ void bbio::SPI_read()
     }
 }
 
+void bbio::allocate(){
+    m_port_clk_SPI  = new unsigned int(NUM_ADC);
+    m_port_din_SPI  = new unsigned int(NUM_ADC);
+    m_port_dout_SPI = new unsigned int(NUM_ADC);
+    m_port_cs_SPI   = new unsigned int(NUM_ADC);
+
+}
+
 void bbio::open(){
     
     // GPIO init
@@ -191,10 +199,6 @@ void bbio::open(){
 #ifdef _ENABLE_DEBUG_
     fprintf(stderr, "Initializing the PINS \n");
 #endif
-    m_port_clk_SPI  = new unsigned int(NUM_ADC);
-    m_port_din_SPI  = new unsigned int(NUM_ADC);
-    m_port_dout_SPI = new unsigned int(NUM_ADC);
-    m_port_cs_SPI   = new unsigned int(NUM_ADC);
     
     //BBBIO init
     iolib_init();

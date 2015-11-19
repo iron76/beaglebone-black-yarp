@@ -20,6 +20,7 @@ class bbio {
 private:
     void SPI_read();
 public:
+    void allocate();
     void open();
     void close();
     void getAxes(int *);
