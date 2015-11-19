@@ -10,7 +10,6 @@
 #include <BeagleBoneInputOutput.h>
 
 #define pin_spi_cs1  P9_28 // 3_17=113
-#define pin_spi_other P9_29 // 3_16=111
 #define pin_spi_mosi P9_30 // 3_15=112
 #define pin_spi_sclk P9_31 // 3_14=110
 #define pin_spi_cs2  P9_42 // 0_7 =7
@@ -33,7 +32,6 @@ unsigned long SPI_sensor_value[NUM_ADC][NUM_ADC_PORT];
 bool clock_edge = false;
 unsigned short resolution = 0x0FFF;
 void set_SCLK(bool value) { digitalWrite(pin_spi_sclk, value); }
-void set_OTHER(bool value) { digitalWrite(pin_spi_other, value); }
 void set_MOSI(bool value) { digitalWrite(pin_spi_mosi, value); }
 void setCS1(bool value){ digitalWrite(pin_spi_cs1, value); }
 void setCS2(bool value){ digitalWrite(pin_spi_cs2, value); }
@@ -46,7 +44,6 @@ void init_pins()
 {
     set_SCLK(LOW);
     set_MOSI(LOW);
-    set_OTHER(LOW);
     setCS1(HIGH);
     setCS2(HIGH);
 }
