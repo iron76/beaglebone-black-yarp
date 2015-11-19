@@ -9,6 +9,7 @@
 
 #include <BBBiolib.h>
 #include <gpio.h>
+#include <map>
 
 
 class bbio {
@@ -26,4 +27,8 @@ public:
     void getEncoders (double *);
     void setRefOutput(int, double);
     void setRefOutputs(const double *v);
+    void set_m_port_clk_SPI(int, int pin);
+    void set_m_port_din_SPI(int, int pin);
+    void set_m_port_dout_SPI(int, int pin);
+    void set_m_port_cs_SPI(int, int pin);
 };

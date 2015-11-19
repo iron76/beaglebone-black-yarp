@@ -130,12 +130,16 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
     {
         it_bbb = m_bbbiomap.find(m_bbbiosclk[i]);
         ok &= (it_bbb != m_bbbiomap.end());
+        if (ok) m_bbio.set_m_port_clk_SPI(i, it_bbb->second);
         it_bbb = m_bbbiomap.find(m_bbbiomosi[i]);
         ok &= (it_bbb != m_bbbiomap.end());
+        if (ok) m_bbio.set_m_port_din_SPI(i, it_bbb->second);
         it_bbb = m_bbbiomap.find(m_bbbiomiso[i]);
         ok &= (it_bbb != m_bbbiomap.end());
+        if (ok) m_bbio.set_m_port_dout_SPI(i, it_bbb->second);
         it_bbb = m_bbbiomap.find(m_bbbioss[i]);
         ok &= (it_bbb != m_bbbiomap.end());
+        if (ok) m_bbio.set_m_port_cs_SPI(i, it_bbb->second);
         if (!ok)
         {
             std::cout << "AthleteBot::open() error: cannot find supplied bbbio PIN name. " << std::endl;

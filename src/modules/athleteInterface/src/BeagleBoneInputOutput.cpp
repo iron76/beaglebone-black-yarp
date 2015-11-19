@@ -196,11 +196,6 @@ void bbio::open(){
     m_port_dout_SPI = new unsigned int(NUM_ADC);
     m_port_cs_SPI   = new unsigned int(NUM_ADC);
     
-    m_port_clk_SPI[0]  = BBBIO_GPIO_PIN_16;
-    m_port_din_SPI[0]  = BBBIO_GPIO_PIN_13;
-    m_port_dout_SPI[0] = BBBIO_GPIO_PIN_12;
-    m_port_cs_SPI[0]   = BBBIO_GPIO_PIN_19;
-    
     //BBBIO init
     iolib_init();
     BBBIO_sys_Enable_GPIO(BBBIO_GPIO1);
@@ -264,5 +259,23 @@ void bbio::setRefOutputs(const double *v)
             }
 }
 
+void bbio::set_m_port_clk_SPI(int i, int pin)
+{
+    m_port_clk_SPI[i]  = pin;
+}
 
+void bbio::set_m_port_din_SPI(int i, int pin)
+{
+    m_port_din_SPI[i]  = pin;
+}
+
+void bbio::set_m_port_dout_SPI(int i, int pin)
+{
+    m_port_dout_SPI[i]  = pin;
+}
+
+void bbio::set_m_port_cs_SPI(int i, int pin)
+{
+    m_port_cs_SPI[i]  = pin;
+}
 
