@@ -96,7 +96,7 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
     init();
 
 #ifdef _ENABLE_DEBUG_
-    fprintf(stderr, "Parsing the names for joints\n");
+    fprintf(stderr, "Parsing the names for joints (%d) \n", m_njoints);
 #endif
     bool ok = true;
     ok = ok & getNamesFromConfig(config, m_jointNames, "joint_names");
