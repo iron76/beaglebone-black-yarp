@@ -12,6 +12,12 @@
 
 
 class bbio {
+    unsigned int *m_port_clk_SPI;
+    unsigned int *m_port_din_SPI;
+    unsigned int *m_port_dout_SPI;
+    unsigned int *m_port_cs_SPI;
+private:
+    void SPI_read();
 public:
     void open();
     void close();
