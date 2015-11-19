@@ -261,21 +261,25 @@ void bbio::setRefOutputs(const double *v)
 
 void bbio::set_m_port_clk_SPI(int i, int pin)
 {
-    m_port_clk_SPI[i]  = pin;
+    if (i >=0 && i< NUM_ADC)
+        m_port_clk_SPI[i]  = pin;
 }
 
 void bbio::set_m_port_din_SPI(int i, int pin)
 {
-    m_port_din_SPI[i]  = pin;
+    if (i >=0 && i< NUM_ADC)
+        m_port_din_SPI[i]  = pin;
 }
 
 void bbio::set_m_port_dout_SPI(int i, int pin)
 {
-    m_port_dout_SPI[i]  = pin;
+    if (i >=0 && i< NUM_ADC)
+        m_port_dout_SPI[i]  = pin;
 }
 
 void bbio::set_m_port_cs_SPI(int i, int pin)
 {
-    m_port_cs_SPI[i]  = pin;
+    if (i >=0 && i< NUM_ADC)
+        m_port_cs_SPI[i]  = pin;
 }
 
