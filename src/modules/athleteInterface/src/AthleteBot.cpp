@@ -23,7 +23,7 @@ using namespace yarp::dev;
 
 #define STRING_MACRO(x) (#x)
 
-bool AthleteBot::getNamesFromConfig(yarp::os::Searchable& config, yarp::sig::VectorOf<std::string>& names_vector, const std::string key_string)
+bool AthleteBot::getNamesFromConfig(yarp::os::Searchable& config, std::vector<std::string>& names_vector, const std::string key_string)
 {
 #ifdef _ENABLE_DEBUG_
     std::cout << "AthleteBot::getNamesFromConfig(): size of names_vector is: " << names_vector.size() << std::endl;
@@ -47,7 +47,7 @@ bool AthleteBot::getNamesFromConfig(yarp::os::Searchable& config, yarp::sig::Vec
 #ifdef _ENABLE_DEBUG_
         std::cout << "AthleteBot::getNamesFromConfig(): " << controlboard_joint_name << std::endl;
 #endif
-        names_vector[i] = controlboard_joint_name;
+        names_vector.push_back(controlboard_joint_name);
 #ifdef _ENABLE_DEBUG_
         std::cout << "AthleteBot::getNamesFromConfig(): set joint name to: " << names_vector[i] << std::endl;
 #endif
@@ -63,10 +63,7 @@ void AthleteBot::init() {
     m_trajectoryGenerationReferenceAcc.size(m_njoints);   /* desired acc for vel generation */
     m_positions.size(m_njoints);
     m_referenceOuputs.size(m_njoints);
-    m_jointNames.resize(m_njoints);
 
-    m_bbbiosclk.resize(m_njoints); m_bbbiomosi.resize(m_njoints); m_bbbiomiso.resize(m_njoints); m_bbbioss.resize(m_njoints);
-    m_gpiosclk.resize(m_njoints);  m_gpiomosi.resize(m_njoints);  m_gpiomiso.resize(m_njoints);  m_gpioss.resize(m_njoints);
     m_controlMode.resize(m_njoints,(int) VOCAB_CM_OPENLOOP);
     for (int i=0; i<m_njoints; i++) {
         m_referencePositions[i] = 0;
@@ -135,13 +132,13 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
     std::map<std::string,int>::iterator it_bbb;
     for (int i=0; i<m_njoints; i++)
     {
-        it_bbb = m_bbbiomap.find(m_bbbiosclk(i));
+        it_bbb = m_bbbiomap.find(m_bbbiosclk[i]);
         ok &= (it_bbb != m_bbbiomap.end());
-        it_bbb = m_bbbiomap.find(m_bbbiomosi(i));
+        it_bbb = m_bbbiomap.find(m_bbbiomosi[i]);
         ok &= (it_bbb != m_bbbiomap.end());
-        it_bbb = m_bbbiomap.find(m_bbbiomiso(i));
+        it_bbb = m_bbbiomap.find(m_bbbiomiso[i]);
         ok &= (it_bbb != m_bbbiomap.end());
-        it_bbb = m_bbbiomap.find(m_bbbioss(i));
+        it_bbb = m_bbbiomap.find(m_bbbioss[i]);
         ok &= (it_bbb != m_bbbiomap.end());
         if (!ok)
         {
@@ -157,13 +154,13 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
     std::map<std::string,PIN>::iterator it_gp;
     for (int i=0; i<m_njoints; i++)
     {
-        it_gp = m_gpiomap.find(m_gpiosclk(i));
+        it_gp = m_gpiomap.find(m_gpiosclk[i]);
         ok &= (it_gp != m_gpiomap.end());
-        it_gp = m_gpiomap.find(m_gpiomiso(i));
+        it_gp = m_gpiomap.find(m_gpiomiso[i]);
         ok &= (it_gp != m_gpiomap.end());
-        it_gp = m_gpiomap.find(m_gpiomosi(i));
+        it_gp = m_gpiomap.find(m_gpiomosi[i]);
         ok &= (it_gp != m_gpiomap.end());
-        it_gp = m_gpiomap.find(m_gpioss(i));
+        it_gp = m_gpiomap.find(m_gpioss[i]);
         ok &= (it_gp != m_gpiomap.end());        
         if (!ok)
         {

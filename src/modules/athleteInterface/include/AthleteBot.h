@@ -15,6 +15,7 @@
 #include <yarp/sig/Image.h>
 #include <yarp/os/Time.h>
 #include <map>
+#include <vector>
 
 // BeagleBone black GPIO access
 #include <BeagleBoneInputOutput.h>
@@ -52,17 +53,18 @@ private:
     yarp::sig::Vector m_positions;
     yarp::sig::Vector m_referenceOuputs;
     yarp::sig::VectorOf<int> m_controlMode;
-    yarp::sig::VectorOf<std::string> m_jointNames;
-
-    yarp::sig::VectorOf<std::string> m_bbbiosclk;
-    yarp::sig::VectorOf<std::string> m_bbbiomosi;
-    yarp::sig::VectorOf<std::string> m_bbbiomiso;
-    yarp::sig::VectorOf<std::string> m_bbbioss;
     
-    yarp::sig::VectorOf<std::string> m_gpiosclk;
-    yarp::sig::VectorOf<std::string> m_gpiomosi;
-    yarp::sig::VectorOf<std::string> m_gpiomiso;
-    yarp::sig::VectorOf<std::string> m_gpioss;
+    std::vector<std::string> m_jointNames;
+
+    std::vector<std::string> m_bbbiosclk;
+    std::vector<std::string> m_bbbiomosi;
+    std::vector<std::string> m_bbbiomiso;
+    std::vector<std::string> m_bbbioss;
+    
+    std::vector<std::string> m_gpiosclk;
+    std::vector<std::string> m_gpiomosi;
+    std::vector<std::string> m_gpiomiso;
+    std::vector<std::string> m_gpioss;
     
     bbio m_bbio;
     
@@ -72,7 +74,7 @@ public:
     
     virtual bool open(yarp::os::Searchable& config);
 
-    bool getNamesFromConfig(yarp::os::Searchable& config, yarp::sig::VectorOf<std::string>& names_vector, const std::string key_string);  /* parsing the name of joints */
+    bool getNamesFromConfig(yarp::os::Searchable& config, std::vector<std::string>& names_vector, const std::string key_string);  /* parsing the name of joints */
     
     
     // IPositionControl etc.
