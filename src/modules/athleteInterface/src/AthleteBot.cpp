@@ -47,7 +47,10 @@ bool AthleteBot::getNamesFromConfig(yarp::os::Searchable& config, yarp::sig::Vec
 #ifdef _ENABLE_DEBUG_
         std::cout << "AthleteBot::getNamesFromConfig(): " << controlboard_joint_name << std::endl;
 #endif
-        names_vector(i) = controlboard_joint_name;
+        names_vector[i] = controlboard_joint_name;
+#ifdef _ENABLE_DEBUG_
+        std::cout << "AthleteBot::getNamesFromConfig(): set joint name to: " << names_vector[i] << std::endl;
+#endif
     }
     return true;
 }
