@@ -24,11 +24,7 @@ using namespace yarp::dev;
 #define STRING_MACRO(x) (#x)
 
 bool AthleteBot::getNamesFromConfig(yarp::os::Searchable& config, std::vector<std::string>& names_vector, const std::string key_string)
-{
-#ifdef _ENABLE_DEBUG_
-    std::cout << "AthleteBot::getNamesFromConfig(): size of names_vector is: " << names_vector.size() << std::endl;
-#endif
-    
+{    
     yarp::os::Property configuration;
     configuration.fromString(config.toString().c_str());
     
