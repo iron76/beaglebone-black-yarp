@@ -29,23 +29,20 @@
 unsigned long SPI_sensor_value[NUM_ADC][NUM_ADC_PORT];
 
 // SPI
+void wait_SPI(void){}
 bool clock_edge = false;
 unsigned short resolution = 0x0FFF;
 void set_SCLK(bool value) { digitalWrite(pin_spi_sclk, value); }
 void set_MOSI(bool value) { digitalWrite(pin_spi_mosi, value); }
-void setCS1(bool value){ digitalWrite(pin_spi_cs1, value); }
-void setCS2(bool value){ digitalWrite(pin_spi_cs2, value); }
+void setCS(bool value, PIN pin){ digitalWrite(pin, !value); wait_SPI(); wait_SPI();}
 void set_clock_edge(bool value){ clock_edge = value; }
 bool get_MISO(void) { return false; } // dummy
-void wait_SPI(void){}
-void chipSelect1(bool value){ setCS1(!value); wait_SPI(); wait_SPI(); }
-void chipSelect2(bool value){ setCS2(!value); wait_SPI(); wait_SPI(); }
 void init_pins()
 {
     set_SCLK(LOW);
     set_MOSI(LOW);
-    setCS1(HIGH);
-    setCS2(HIGH);
+    setCS(LOW, pin_spi_cs1);
+    setCS(LOW, pin_spi_cs2);
 }
 
 unsigned char transmit8bit(unsigned char output_data){
@@ -82,15 +79,15 @@ void setDARegister(unsigned char ch, unsigned short dac_data){
     
     if (ch < 8) {
         register_data = (((unsigned short)ch << 12) & 0x7000) | (dac_data & 0x0fff);
-        chipSelect1(true);
+        setCS(true, pin_spi_cs1);
         transmit16bit(register_data);
-        chipSelect1(false);
+        setCS(false, pin_spi_cs1);
     }
     else if (ch >= 8) {
         register_data = (((unsigned short)(ch & 0x0007) << 12) & 0x7000) | (dac_data & 0x0fff);
-        chipSelect2(true);
+        setCS(true, pin_spi_cs2);
         transmit16bit(register_data);
-        chipSelect2(false);
+        setCS(false, pin_spi_cs2);
     }
 }
 
@@ -98,22 +95,22 @@ void init_DAConvAD5328(void) {
     set_clock_edge(false);// negative clock (use falling-edge)
     
     // initialize chip 1
-    chipSelect1(true);
+    setCS(true, pin_spi_cs1);
     transmit16bit(0xa000);// synchronized mode
-    chipSelect1(false);
+    setCS(false, pin_spi_cs1);
     
-    chipSelect1(true);
+    setCS(true, pin_spi_cs1);
     transmit16bit(0x8003);// Vdd as reference
-    chipSelect1(false);
+    setCS(false, pin_spi_cs1);
     
     // initialize chip 2
-    chipSelect2(true);
+    setCS(true, pin_spi_cs2);
     transmit16bit(0xa000);// synchronized mode
-    chipSelect2(false);
+    setCS(false, pin_spi_cs2);
     
-    chipSelect2(true);
+    setCS(true, pin_spi_cs2);
     transmit16bit(0x8003);// Vdd as reference
-    chipSelect2(false);
+    setCS(false, pin_spi_cs2);
 }
 
 void bbio::SPI_read()
