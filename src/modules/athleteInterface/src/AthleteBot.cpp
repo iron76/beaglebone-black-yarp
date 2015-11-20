@@ -126,50 +126,120 @@ bool AthleteBot::open(yarp::os::Searchable& config) {
 #ifdef _ENABLE_DEBUG_
     fprintf(stderr, "Double checking the name of bbbio pins\n");
 #endif
+    //Getting names for BBBIO pins
     std::map<std::string,int>::iterator it_bbb;
     for (int i=0; i<m_njoints; i++)
+        
     {
         it_bbb = m_bbbiomap.find(m_bbbiosclk[i]);
-        ok &= (it_bbb != m_bbbiomap.end());
-        if (ok) m_bbio.set_m_port_clk_SPI(i, it_bbb->second);
+        if(it_bbb != m_bbbiomap.end())
+            m_bbio.set_m_port_clk_SPI(i, it_bbb->second);
+        else
+            ok = false;
+        
         it_bbb = m_bbbiomap.find(m_bbbiomosi[i]);
-        ok &= (it_bbb != m_bbbiomap.end());
-        if (ok) m_bbio.set_m_port_din_SPI(i, it_bbb->second);
+        if (it_bbb != m_bbbiomap.end())
+            m_bbio.set_m_port_din_SPI(i, it_bbb->second);
+        else
+            ok = false;
+        
         it_bbb = m_bbbiomap.find(m_bbbiomiso[i]);
-        ok &= (it_bbb != m_bbbiomap.end());
-        if (ok) m_bbio.set_m_port_dout_SPI(i, it_bbb->second);
+        if ((it_bbb != m_bbbiomap.end()))
+            m_bbio.set_m_port_dout_SPI(i, it_bbb->second);
+        else
+            ok = false;
+        
         it_bbb = m_bbbiomap.find(m_bbbioss[i]);
-        ok &= (it_bbb != m_bbbiomap.end());
-        if (ok) m_bbio.set_m_port_cs_SPI(i, it_bbb->second);
+        if ((it_bbb != m_bbbiomap.end()))
+            m_bbio.set_m_port_cs_SPI(i, it_bbb->second);
+        else
+            ok = false;
+        
+        if (!strcmp(m_bbbiosclk[i].c_str(), "not_used"))
+        {
+            std::cout << "AthleteBot::open() warning: not using sclk_bbbio[" << i << "]" << std::endl;
+            ok = true;
+        }
+        if (!strcmp(m_bbbiomosi[i].c_str(), "not_used"))
+        {
+            std::cout << "AthleteBot::open() warning: not using mosi_bbbio[" << i << "]" << std::endl;
+            ok = true;
+        }
+        if (!strcmp(m_bbbiomiso[i].c_str(), "not_used"))
+        {
+            std::cout << "AthleteBot::open() warning: not using miso_bbbio[" << i << "]" << std::endl;
+            ok = true;
+        }
+        if (!strcmp(m_bbbioss[i].c_str(), "not_used"))
+        {
+            std::cout << "AthleteBot::open() warning: not using ss_bbbio[" << i << "]" << std::endl;
+            ok = true;
+        }
         if (!ok)
         {
             std::cout << "AthleteBot::open() error: cannot find supplied bbbio PIN name. " << std::endl;
             return false;
         }
-        
     }
 
 #ifdef _ENABLE_DEBUG_
     fprintf(stderr, "Double checking the name of gpio pins\n");
 #endif
+    //Getting names for GPIO pins
     std::map<std::string,PIN>::iterator it_gp;
     for (int i=0; i<m_njoints; i++)
     {
         it_gp = m_gpiomap.find(m_gpiosclk[i]);
-        ok &= (it_gp != m_gpiomap.end());
+        if ((it_gp != m_gpiomap.end()))
+            m_bbio.set_m_pin_spi_sclk(i, &(it_gp->second));
+        else
+            ok = false;
+
         it_gp = m_gpiomap.find(m_gpiomiso[i]);
-        ok &= (it_gp != m_gpiomap.end());
+        if ((it_gp != m_gpiomap.end()))
+            m_bbio.set_m_pin_spi_miso(i, &(it_gp->second));
+        else
+            ok = false;
+
         it_gp = m_gpiomap.find(m_gpiomosi[i]);
-        ok &= (it_gp != m_gpiomap.end());
+        if ((it_gp != m_gpiomap.end()))
+            m_bbio.set_m_pin_spi_mosi(i, &(it_gp->second));
+        else
+            ok = false;
+
         it_gp = m_gpiomap.find(m_gpioss[i]);
-        ok &= (it_gp != m_gpiomap.end());        
-        if (!ok)
+        if ((it_gp != m_gpiomap.end()))
+            m_bbio.set_m_pin_spi_cs(i, &(it_gp->second));
+        else
+            ok = false;
+
+        if (!strcmp(m_gpiosclk[i].c_str(), "not_used"))
+        {
+            std::cout << "AthleteBot::open() warning: not using sclk_gpio[" << i << "]" << std::endl;
+            ok = true;
+        }
+        if (!strcmp(m_gpiomosi[i].c_str(), "not_used"))
+        {
+            std::cout << "AthleteBot::open() warning: not using mosi_gpio[" << i << "]" << std::endl;
+            ok = true;
+        }
+        if (!strcmp(m_gpiomiso[i].c_str(), "not_used"))
+        {
+            std::cout << "AthleteBot::open() warning: not using miso_gpio[" << i << "]" << std::endl;
+            ok = true;
+        }
+        if (!strcmp(m_gpioss[i].c_str(), "not_used"))
+        {
+            std::cout << "AthleteBot::open() warning: not using ss_gpio[" << i << "]" << std::endl;
+            ok = true;
+        }
+        if(!ok)
         {
             std::cout << "AthleteBot::open() error: cannot find supplied gpio PIN name. " << std::endl;
             return false;
         }
     }
-    
+
 #ifndef _DISABLE_IO_
     m_bbio.open();
     m_bbio.setRefOutputs(m_referenceOuputs.data());
