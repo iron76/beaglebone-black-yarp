@@ -9,14 +9,15 @@
 
 #include <BeagleBoneInputOutput.h>
 
-#define pin_spi_mosi P9_30 // 3_15=112
-#define pin_spi_sclk P9_31 // 3_14=110
 
 #define NUM_ADC 1
 #define NUM_ADC_PORT 8
 #define NUM_OF_CHANNELS 8
+#define NUM_DAC 2
 
-PIN pin_spi_cs[]={P9_28,P9_42}; // 3_17=113, 0_7 =7
+// #define pin_spi_mosi P9_30 // 3_15=112
+// #define pin_spi_sclk P9_31 // 3_14=110
+// PIN pin_spi_cs[]={P9_28,P9_42}; // 3_17=113, 0_7 =7
 
 //sclk_bbbio         BBBIO_GPIO_PIN_16
 //mosi_bbbio         BBBIO_GPIO_PIN_13
@@ -32,20 +33,22 @@ unsigned long SPI_sensor_value[NUM_ADC][NUM_ADC_PORT];
 void wait_SPI(void){}
 bool clock_edge = false;
 unsigned short resolution = 0x0FFF;
-void set_SCLK(bool value) { digitalWrite(pin_spi_sclk, value); }
-void set_MOSI(bool value) { digitalWrite(pin_spi_mosi, value); }
 void setCS(bool value, PIN pin){ digitalWrite(pin, !value); wait_SPI(); wait_SPI();}
 void set_clock_edge(bool value){ clock_edge = value; }
 bool get_MISO(void) { return false; } // dummy
-void init_pins()
+
+void bbio::init_pins()
 {
-    set_SCLK(LOW);
-    set_MOSI(LOW);
-    setCS(LOW, pin_spi_cs[0]);
-    setCS(LOW, pin_spi_cs[1]);
+    //set_SCLK(LOW);
+    digitalWrite((PIN) *m_pin_spi_sclk[0], !clock_edge);
+    
+    //set_MOSI(LOW);
+    digitalWrite((PIN) *m_pin_spi_mosi[0], LOW);
+    setCS(LOW, (PIN) *m_pin_spi_cs[0]);
+    setCS(LOW, (PIN) *m_pin_spi_cs[1]);
 }
 
-unsigned char transmit8bit(unsigned char output_data){
+unsigned char bbio::transmit8bit(unsigned char output_data, int j){
     unsigned char input_data = 0;
     int i;
     for(i = 7; i >= 0; i--){
@@ -53,64 +56,58 @@ unsigned char transmit8bit(unsigned char output_data){
         //        Slave  : read with up trigger
         // MISO - Master : read before down trigger
         //        Slave  : write after down trigger
-        set_SCLK(!clock_edge);
-        set_MOSI( (bool)((output_data>>i)&0x01) );
+        
+        //set_SCLK(!clock_edge);
+        digitalWrite((PIN) *m_pin_spi_sclk[j], !clock_edge);
+        
+        //set_MOSI( (bool)((output_data>>i)&0x01) );
+        digitalWrite((PIN) *m_pin_spi_mosi[j], (bool)((output_data>>i)&0x01));
+        
         input_data <<= 1;
         wait_SPI();
-        set_SCLK(clock_edge);
+        
+        //set_SCLK(clock_edge);
+        digitalWrite((PIN) *m_pin_spi_sclk[j], !clock_edge);
+        
         input_data |= get_MISO() & 0x01;
         wait_SPI();
     }
     return input_data;
 }
 
-unsigned short transmit16bit(unsigned short output_data){
+unsigned short bbio::transmit16bit(unsigned short output_data, int j){
     unsigned char input_data_H, input_data_L;
     unsigned short input_data;
-    input_data_H = transmit8bit( (unsigned char)(output_data>>8) );
-    input_data_L = transmit8bit( (unsigned char)(output_data) );
+    input_data_H = transmit8bit( (unsigned char)(output_data>>8) , j);
+    input_data_L = transmit8bit( (unsigned char)(output_data) , j);
     input_data = (((unsigned short)input_data_H << 8)&0xff00) | (unsigned short)input_data_L;
     return input_data;
 }
 
-
-void setDARegister(unsigned char ch, unsigned short dac_data){
+void bbio::setDARegister(unsigned char j, unsigned short dac_data){
     unsigned short register_data;
     
-    if (ch < 8) {
-        register_data = (((unsigned short)ch << 12) & 0x7000) | (dac_data & 0x0fff);
-        setCS(true, pin_spi_cs[0]);
-        transmit16bit(register_data);
-        setCS(false, pin_spi_cs[0]);
-    }
-    else if (ch >= 8) {
-        register_data = (((unsigned short)(ch & 0x0007) << 12) & 0x7000) | (dac_data & 0x0fff);
-        setCS(true, pin_spi_cs[1]);
-        transmit16bit(register_data);
-        setCS(false, pin_spi_cs[1]);
-    }
+    
+    register_data = (((unsigned short)j << 12) & 0x7000) | (dac_data & 0x0fff);
+    setCS(true, (PIN) *m_pin_spi_cs[j]);
+    transmit16bit(register_data, j);
+    setCS(false, (PIN) *m_pin_spi_cs[j]);
 }
 
-void init_DAConvAD5328(void) {
+void bbio::init_DAConvAD5328(void) {
     set_clock_edge(false);// negative clock (use falling-edge)
     
-    // initialize chip 1
-    setCS(true, pin_spi_cs[0]);
-    transmit16bit(0xa000);// synchronized mode
-    setCS(false, pin_spi_cs[0]);
-    
-    setCS(true, pin_spi_cs[0]);
-    transmit16bit(0x8003);// Vdd as reference
-    setCS(false, pin_spi_cs[0]);
-    
-    // initialize chip 2
-    setCS(true, pin_spi_cs[1]);
-    transmit16bit(0xa000);// synchronized mode
-    setCS(false, pin_spi_cs[1]);
-    
-    setCS(true, pin_spi_cs[1]);
-    transmit16bit(0x8003);// Vdd as reference
-    setCS(false, pin_spi_cs[1]);
+    for(int i = 0; i < NUM_DAC; i++)
+    {
+        // initialize chip i
+        setCS(true, (PIN) *m_pin_spi_cs[i]);
+        transmit16bit(0xa000, i);// synchronized mode
+        setCS(false, (PIN) *m_pin_spi_cs[i]);
+        
+        setCS(true, (PIN) *m_pin_spi_cs[i]);
+        transmit16bit(0x8003, i);// Vdd as reference
+        setCS(false, (PIN) *m_pin_spi_cs[i]);
+    }
 }
 
 void bbio::SPI_read()
@@ -173,11 +170,16 @@ void bbio::SPI_read()
 }
 
 void bbio::allocate(){
-    m_port_clk_SPI  = new unsigned int(NUM_ADC);
-    m_port_din_SPI  = new unsigned int(NUM_ADC);
-    m_port_dout_SPI = new unsigned int(NUM_ADC);
-    m_port_cs_SPI   = new unsigned int(NUM_ADC);
-
+    m_port_clk_SPI  = new unsigned int[NUM_ADC];
+    m_port_din_SPI  = new unsigned int[NUM_ADC];
+    m_port_dout_SPI = new unsigned int[NUM_ADC];
+    m_port_cs_SPI   = new unsigned int[NUM_ADC];
+    
+    m_pin_spi_sclk  = new PIN*[NUM_DAC];
+    m_pin_spi_miso  = new PIN*[NUM_DAC];
+    m_pin_spi_mosi  = new PIN*[NUM_DAC];
+    m_pin_spi_cs    = new PIN*[NUM_DAC];
+    
 }
 
 void bbio::open(){
@@ -217,6 +219,11 @@ void bbio::close(){
     delete m_port_din_SPI;
     delete m_port_dout_SPI;
     delete m_port_cs_SPI;
+    
+    delete m_pin_spi_sclk;
+    delete m_pin_spi_miso;
+    delete m_pin_spi_mosi;
+    delete m_pin_spi_cs;
 }
 
 
@@ -257,6 +264,7 @@ void bbio::setRefOutputs(const double *v)
             }
 }
 
+//BBBIO
 void bbio::set_m_port_clk_SPI(int i, int pin)
 {
     if (i >=0 && i< NUM_ADC)
@@ -279,5 +287,30 @@ void bbio::set_m_port_cs_SPI(int i, int pin)
 {
     if (i >=0 && i< NUM_ADC)
         m_port_cs_SPI[i]  = pin;
+}
+
+//GPIO
+void bbio::set_m_pin_spi_sclk(int i, PIN *pin)
+{
+    if (i >=0 && i< NUM_ADC)
+        m_pin_spi_sclk[i]  = pin;
+}
+
+void bbio::set_m_pin_spi_miso(int i, PIN *pin)
+{
+    if (i >=0 && i< NUM_ADC)
+        m_pin_spi_miso[i]  = pin;
+}
+
+void bbio::set_m_pin_spi_mosi(int i, PIN *pin)
+{
+    if (i >=0 && i< NUM_ADC)
+        m_pin_spi_mosi[i]  = pin;
+}
+
+void bbio::set_m_pin_spi_cs(int i, PIN *pin)
+{
+    if (i >=0 && i< NUM_ADC)
+        m_pin_spi_cs[i]  = pin;
 }
 

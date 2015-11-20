@@ -12,13 +12,25 @@
 #include <map>
 
 
+
 class bbio {
     unsigned int *m_port_clk_SPI;
     unsigned int *m_port_din_SPI;
     unsigned int *m_port_dout_SPI;
     unsigned int *m_port_cs_SPI;
+    
+    PIN **m_pin_spi_sclk;
+    PIN **m_pin_spi_miso;
+    PIN **m_pin_spi_mosi;
+    PIN **m_pin_spi_cs;
+    
 private:
     void SPI_read();
+    void init_DAConvAD5328();
+    void init_pins();
+    void setDARegister(unsigned char, unsigned short);
+    unsigned char transmit8bit(unsigned char, int);
+    unsigned short transmit16bit(unsigned short, int);
 public:
     void allocate();
     void open();
@@ -32,4 +44,10 @@ public:
     void set_m_port_din_SPI(int, int pin);
     void set_m_port_dout_SPI(int, int pin);
     void set_m_port_cs_SPI(int, int pin);
+    
+    void set_m_pin_spi_sclk(int, PIN* pin);
+    void set_m_pin_spi_miso(int, PIN* pin);
+    void set_m_pin_spi_mosi(int, PIN* pin);
+    void set_m_pin_spi_cs(int, PIN* pin);
+    
 };
