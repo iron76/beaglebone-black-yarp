@@ -39,6 +39,9 @@ bool get_MISO(void) { return false; } // dummy
 
 void bbio::init_pins()
 {
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Running init_pins\n");
+#endif
     //set_SCLK(LOW);
     digitalWrite((PIN) *m_pin_spi_sclk[0], !clock_edge);
     
@@ -46,6 +49,10 @@ void bbio::init_pins()
     digitalWrite((PIN) *m_pin_spi_mosi[0], LOW);
     setCS(LOW, (PIN) *m_pin_spi_cs[0]);
     setCS(LOW, (PIN) *m_pin_spi_cs[1]);
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "init_pins terminated\n");
+#endif
+    
 }
 
 unsigned char bbio::transmit8bit(unsigned char output_data, int j){
@@ -95,6 +102,9 @@ void bbio::setDARegister(unsigned char j, unsigned short dac_data){
 }
 
 void bbio::init_DAConvAD5328(void) {
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "Running init_DAConvAD5328\n");
+#endif
     set_clock_edge(false);// negative clock (use falling-edge)
     
     for(int i = 0; i < NUM_DAC; i++)
@@ -108,6 +118,9 @@ void bbio::init_DAConvAD5328(void) {
         transmit16bit(0x8003, i);// Vdd as reference
         setCS(false, (PIN) *m_pin_spi_cs[i]);
     }
+#ifdef _ENABLE_DEBUG_
+    fprintf(stderr, "init_DAConvAD5328 terminated\n");
+#endif
 }
 
 void bbio::SPI_read()
