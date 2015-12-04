@@ -206,7 +206,7 @@ void bbio::open(){
     init_DAConvAD5328();
 
 #ifdef _ENABLE_DEBUG_
-    fprintf(stderr, "Initializing the PINS \n");
+    fprintf(stderr, "Done with the DAC initialization \n");
 #endif
     
     //BBBIO init
